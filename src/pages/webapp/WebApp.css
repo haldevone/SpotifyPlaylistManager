@@ -1,0 +1,35 @@
+.btn-big{
+    background: var(--color-btn);
+    padding: 12px 12px;
+    border-radius: 20px;
+    color: var(--color-primary);
+    font-size: var(--fs-p);
+    border: none;
+  }
+  .btn-big:focus{
+    background: var(--color-btn);
+    color: var(--color-primary);
+  }
+  /* .btn-big-selected{
+    background: var(--color-btn);
+    color: var(--color-primary);
+  } */
+  
+  .btn-big:hover{
+    background: var(--color-btn-selected);
+    cursor: pointer;
+  }
+  .btn-big:active{
+    transform: scale(0.95);
+  }
+
+  /* WEBAPP */
+  .webapp-btns{
+      position: absolute;
+      right: 4rem;
+      top: 7rem
+  }
+/* GETPLAYLIST */
+  .playlist-container{
+  margin-top: 10rem;
+  }

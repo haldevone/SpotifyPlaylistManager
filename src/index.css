@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300&family=Quicksand:wght@300;400;500;600;700&family=Sora:wght@200;300;400;700&display=swap");
+:root{
+  --fs-h1: 3rem;
+  --fs-h2: 2.2rem;
+  --fs-h3: 1.8rem;
+  --fs-h4: 1.5rem;
+  --fs-h5: 1.2rem;
+  --fs-p: 1rem;
+
+  --color-primary: rgb(238, 238, 238);
+  --color-secondary: rgb(63, 59, 59);
+  --color-lightGray: #777;
+
+  --color-btn: rgb(79, 168, 70);
+  --color-btn-selected: rgb(92, 202, 80);
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 30px;
+  font-family: Sora, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul{
+  list-style-type: none;
+}
+
+.btn{
+  background: none;
+  border: 2px solid var(--color-btn);
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: var(--color-btn);
+  font-size: var(--fs-p);
+}
+.btn:focus{
+  background: var(--color-btn);
+  color: var(--color-primary);
+}
+.btn-selected{
+  background: var(--color-btn);
+  color: var(--color-primary);
+}
+
+.btn:hover{
+  background: var(--color-btn);
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.btn:active{
+  transform: scale(0.95);
+}
