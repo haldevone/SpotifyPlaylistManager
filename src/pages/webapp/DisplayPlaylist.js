@@ -2,17 +2,35 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PlayListCard from './PlayListCard';
+import useFirestore from '../../hooks/useFirestore';
+import { Timestamp } from 'firebase/firestore';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const FOLLOWERS_ENDPOINT = "https://api.spotify.com/v1/playlists";
 
 function DisplayPlaylist(props) {
 
-    const [dataFollow, setDataFollow] = useState(null);
+    const [dataComplete, setDataComplete] = useState(null);
     const [showlist, setShowList] = useState(false);
+    const {addDocument, response} = useFirestore('playlists');
+    const { user } = useAuthContext();
 
     useEffect(() => {
         getFollowers();
     }, [props.data]);
+
+    const handleSaveToFirebase = () => {
+        const createdAt = Timestamp.fromDate(new Date());
+
+        if (dataComplete) {
+            addDocument({
+                uid: user.uid,
+                playlist: "my new data",
+                createdAt
+            });
+        }
+       
+    }
 
     const getFollowers = () => {
         let tempFollowers = [];
@@ -31,7 +49,7 @@ function DisplayPlaylist(props) {
                 console.log(error);
             })
         })
-        setDataFollow(tempFollowers);
+        setDataComplete(tempFollowers);
         // setLoaded(true);
     }
 
@@ -40,9 +58,11 @@ function DisplayPlaylist(props) {
     }
 
   return <>
+            <p>{response.success}</p>
+            <p>{response.error}</p>
             <div className='playlist-buttons'>
                 <button className='btn-big playlist-btn' onClick={show}>Get Playlist</button>
-                <button className='btn-big playlist-btn' onClick={show}>Save To Firebase</button>
+                {showlist && <button className='btn-big playlist-btn' onClick={handleSaveToFirebase}>Save To Firebase</button>}
             </div>
             <div className='playlist-headers'>
                 <h3 className='playlist-header-name'>Playlist</h3>
@@ -50,8 +70,8 @@ function DisplayPlaylist(props) {
                 <h3 className='playlist-header-followers'>Followers</h3>
             </div>
         
-            {dataFollow && console.log(dataFollow)}
-            {showlist && dataFollow.map((item) => 
+            {dataComplete && console.log(dataComplete)}
+            {showlist && dataComplete.map((item) => 
                         <PlayListCard key={item.id}>
                         <img src={item.images[0].url} alt="" />
                         <p className='playlist-name'>{item.name}</p>
