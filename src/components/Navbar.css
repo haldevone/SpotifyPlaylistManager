@@ -2,7 +2,7 @@
 .navbar{
     width: 100%;
     padding: 20px 10px;
-    height: 10vh;
+    height: 12vh;
     background: rgb(0,88,3);
     background: linear-gradient(90deg, rgba(0,88,3,1) 
     0%, rgba(18,124,89,1) 35%, rgba(0,255,102,1) 100%);
@@ -10,6 +10,12 @@
     position: absolute;
     top: 0;
     left: 0;
+}
+.navbar-first{
+    padding-left: 2rem;
+}
+.navbar-last{
+    margin-left: auto;
 }
 .navbar::after{
     content: "";
@@ -25,17 +31,20 @@
     margin: 0 5rem;
     color: var(--color-primary);
     font-size: var(--fs-h5);
+    gap: 20px;
 }
 .nav-btn{
-    background: none;
-    border: 2px solid var(--color-btn);
+    background: var(--color-btn);
+    border: 2px solid rgba(0, 102, 0, 0.561);
+    border-radius: 10px;
     padding: 6px 12px;
-    border-radius: 4px;
-    color: var(--color-btn);
+
+    color: var(--color-primary);
     font-size: var(--fs-p);
 }
 .nav-btn:hover{
     background: var(--color-btn);
+    border: 2px solid var(--color-primary);
     color: var(--color-primary);
     cursor: pointer;
   }

@@ -54,10 +54,18 @@
     display: flex;
     margin: 20px;
     justify-content: center;
-    gap: 20px;
 }
 .playlist-btn{
     position: relative;
     height: 45px;
+    margin: 0 0.5rem;
+  }
 
+  .playlist-message{
+      background-color: rgb(230, 188, 84);
+      max-width: 200px;
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 15px;
+      margin: 0 auto;
   }

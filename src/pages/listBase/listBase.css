@@ -1,0 +1,26 @@
+
+.listbase-list-container{
+    background-color: rgb(255, 250, 231);
+    padding: 1rem;
+    margin: 1rem 0;
+}
+.listbase-list{
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+/* .listbase-item{
+    margin: 0 1rem;
+} */
+.listbase-item p{
+    padding-bottom: 0.3rem;
+}
+.listbase-item span{
+    font-weight: bold;
+}
+.listbase-item-name {
+    
+}
