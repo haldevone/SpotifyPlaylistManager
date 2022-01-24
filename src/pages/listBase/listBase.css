@@ -1,8 +1,9 @@
 
 .listbase-list-container{
-    background-color: rgb(255, 250, 231);
-    padding: 1rem;
+    background-color: rgb(241, 241, 241);
+    padding: 1rem 1rem 0.1rem 1rem;
     margin: 1rem 0;
+    border-radius: 20px;
 }
 .listbase-list{
     margin-top: 1rem;
@@ -18,7 +19,7 @@
 .listbase-item p{
     padding-bottom: 0.3rem;
 }
-.listbase-item span{
+.listbase-item span, .listbase-item-name{
     font-weight: bold;
 }
 .listbase-item-name {

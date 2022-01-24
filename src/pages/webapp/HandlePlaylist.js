@@ -58,7 +58,7 @@ function HandlePlaylist() {
     }
 
     const handleSaveToFirebase = () => {
-        const createdAt = Timestamp.fromDate(new Date());
+        const createdAt = Timestamp.fromDate(new Date()).toDate();
 
         if (dataComplete) {
             addDocument({

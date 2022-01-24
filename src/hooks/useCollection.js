@@ -12,8 +12,7 @@ export const useCollection = (collectionName, createdAt, _q) => {
     useEffect(() => {
         let refColl = collection(db, collectionName);
         if (q) {
-            refColl = query(refColl, where(...q)),
-            orderBy(createdAt, "desc"); //You can add limit here
+            refColl = query(refColl, where(...q), orderBy(createdAt, "desc")); //You can add limit here
         }
 
         const unsubscribe = onSnapshot(refColl, (snapshot) => {
@@ -27,7 +26,8 @@ export const useCollection = (collectionName, createdAt, _q) => {
             setError('Could not fetch the data');
         });
 
-        return () => {unsubscribe()}
+        return () => {unsubscribe()
+        }
     }, [q]);
 
     return {documents, error}
