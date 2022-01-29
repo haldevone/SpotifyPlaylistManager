@@ -6,11 +6,13 @@ import './listBase.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleUp } from '@fortawesome/free-solid-svg-icons'
 import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
+import useFirestore from '../../hooks/useFirestore';
 
 
 function ListBase(props) {
     const { user } = useAuthContext();
     const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid])
+    const { deleteDocument } = useFirestore('playlists');
 
     useEffect(() => {
 
@@ -109,9 +111,12 @@ function ListBase(props) {
       <h1>Database</h1>
           {(documents && props.dataComplete) && documents.map((items, index) => {
             return (<div className='listbase-list-container' key={Math.random() * 10000000}>
-              <div>
-                <h4>List: {index}</h4>
-                <h4>Date: {items.createdAt.toDate().toLocaleDateString('en')}</h4>
+              <div className='listbase-outerlist'>
+                <div>
+                  <h4>List: {index}</h4>
+                  <h4>Date: {items.createdAt.toDate().toLocaleDateString('en')}</h4>
+                </div>
+                <button className='listbase-btn' onClick={() => deleteDocument(items.id)}>x</button>
                 {/* {console.log(props.dataComplete)}
                 {console.log(documents)} */}
               </div>

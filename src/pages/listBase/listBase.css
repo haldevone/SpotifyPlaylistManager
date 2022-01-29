@@ -22,6 +22,24 @@
 .listbase-item span, .listbase-item-name{
     font-weight: bold;
 }
-.listbase-item-name {
-    
+.listbase-btn {
+    background-color: rgb(210, 66, 30);
+    border-radius: 10px;
+    color: var(  --color-primary);
+    border: none;
+    font-size: 1.5rem;
+    padding: 0.4rem 0.7rem;
+    transition: all 0.2s;
+}
+.listbase-btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.356);
+}
+.listbase-btn:active{
+    transform: translateY(-1px);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.356);
+}
+.listbase-outerlist{
+    display: flex;
+    justify-content: space-between;
 }
