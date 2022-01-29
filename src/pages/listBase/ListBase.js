@@ -108,7 +108,7 @@ function ListBase(props) {
       <Navbar />
       <h1>Database</h1>
           {(documents && props.dataComplete) && documents.map((items, index) => {
-            return (<div className='listbase-list-container'  key={Math.random() * 10000000}>
+            return (<div className='listbase-list-container' key={Math.random() * 10000000}>
               <div>
                 <h4>List: {index}</h4>
                 <h4>Date: {items.createdAt.toDate().toLocaleDateString('en')}</h4>
@@ -126,7 +126,7 @@ function ListBase(props) {
                   </p>
                   <p className='listbase-item-followers' style={{color: CalcColor(props.dataComplete, item.name, item.tracks, item.followers, false)}}>
                     <span>F: </span>
-                  {`${item.followers} (${CalcDifference(props.dataComplete, item.name, item.tracks, item.followers, false)})`}
+                  {`${item.followers.toLocaleString()} (${CalcDifference(props.dataComplete, item.name, item.tracks, item.followers, false)})`}
                   {CalcArrow(props.dataComplete, item.name, item.tracks, item.followers, false)}
                   </p>
                 </li>

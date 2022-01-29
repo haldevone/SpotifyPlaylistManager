@@ -6,6 +6,8 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import useFirestore from '../../hooks/useFirestore';
 import { Timestamp } from 'firebase/firestore';
 import ListBase from '../listBase/ListBase';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 const PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists/";
 
@@ -81,8 +83,9 @@ function HandlePlaylist() {
         <div className='playlist-container'>
         {response.success && <p className='playlist-message'>Saved To Database!</p>}
             <div className='playlist-buttons'>
-                <button className='btn-big playlist-btn' onClick={() => handleChildShow()}>Get Playlist</button>
-                {dataComplete && 
+                {!switchListbase ? <button className='btn-big playlist-btn' onClick={() => handleChildShow()}>Get Playlist</button> :
+                <button className='btn-big playlist-btn' onClick={() => window.location.reload(false)}><FontAwesomeIcon icon={faArrowLeft} /> Back</button>}
+                {(dataComplete && !switchListbase  ) &&
                 <div>
                     <button className='btn-big playlist-btn' onClick={handleSaveToFirebase}>Save To Database</button>
                     <button className='btn-big playlist-btn' onClick={() => setSwitchListbase(true)}>Compare Database</button>

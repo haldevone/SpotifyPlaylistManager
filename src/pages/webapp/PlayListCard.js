@@ -4,7 +4,7 @@ import './PlayListCard.css'
 function PlayListCard(props) {
     return (
         <>
-        <div className='playlist-card'>
+        <div className='playlist-card'style={{background: props.background}}>
             {props.children}
         </div>
         </>

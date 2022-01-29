@@ -7,8 +7,8 @@
 
 }
 .playlist-card img{
-    height: 100px;
-    width: 100px;
+    height: 75px;
+    width: 75px;
 }
 .playlist-name{
     flex-basis: 20%;
@@ -16,14 +16,14 @@
     overflow: hidden;
 }
 .playlist-description{
-    flex-basis: 50%;
+    flex-basis: 51%;
     padding-right: 3rem;
     padding-top: 0.5rem;
+    font-size: 0.9rem;
 }
 
 .playlist-name{
     padding-top: 10px;
-    font-size: var(--fs-h5);
 }
 .playlist-tracks, .playlist-followers{
     margin-right: auto;
@@ -33,8 +33,16 @@
 .playlist-headers{
     display: flex;
 }
+.playlist-headers::after{
+    content: "";
+    width: 94.5%;
+    height: 40px;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.616);
+    position: absolute;
+    left: 38px;
+}
 .playlist-header-name{
-    flex-basis: 77%;
+    flex-basis: 76%;
     font-weight: bold;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -47,7 +55,7 @@
 }
 
 .playlist-header-followers{
-    margin-left: 3.4rem;
+    margin-left: 4.4rem;
 }
 
 .playlist-buttons{

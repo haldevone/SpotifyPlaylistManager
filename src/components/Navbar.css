@@ -35,16 +35,15 @@
 }
 .nav-btn{
     background: var(--color-btn);
-    border: 2px solid rgba(0, 102, 0, 0.561);
+    border: none;
     border-radius: 10px;
     padding: 6px 12px;
-
+    height: 35px;
     color: var(--color-primary);
     font-size: var(--fs-p);
 }
 .nav-btn:hover{
-    background: var(--color-btn);
-    border: 2px solid var(--color-primary);
+    background: var(--color-btn-selected);
     color: var(--color-primary);
     cursor: pointer;
   }

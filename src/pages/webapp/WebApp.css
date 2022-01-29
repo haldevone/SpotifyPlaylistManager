@@ -5,23 +5,22 @@
     color: var(--color-primary);
     font-size: var(--fs-p);
     border: none;
+    transition: all 0.2s;
   }
-  .btn-big:focus{
-    background: var(--color-btn);
-    color: var(--color-primary);
-  }
-  /* .btn-big-selected{
-    background: var(--color-btn);
-    color: var(--color-primary);
-  } */
-  
+
   .btn-big:hover{
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3px);
     background: var(--color-btn-selected);
     cursor: pointer;
   }
   .btn-big:active{
-    transform: scale(0.95);
+    transform: translateY(0);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+    background: var(--color-btn);
+    color: var(--color-primary);
   }
+
 
   /* WEBAPP */
   .webapp-btns{
