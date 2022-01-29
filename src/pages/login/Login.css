@@ -1,7 +1,7 @@
 .login-form{
     max-width: 360px;
     padding: 0 20px;
-    margin: 200px auto;
+    margin: 18rem auto;
 }
 
 .login-form label{
@@ -23,7 +23,7 @@
 }
 
 .login-hero{
-    height: 25vh;
+    height: 22vh;
     background: rgb(0,88,3);
     background: linear-gradient(90deg, rgba(0,88,3,1) 
     0%, rgba(18,124,89,1) 35%, rgba(0,255,102,1) 100%);
