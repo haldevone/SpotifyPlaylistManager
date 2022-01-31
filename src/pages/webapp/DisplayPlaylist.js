@@ -58,11 +58,11 @@ const DisplayPlaylist = (props) => {
             </div>}
             {showlist && dataComplete.map((item, i) => 
                         <PlayListCard key={item.id} background={i % 2 === 0 && "Snow"}>
-                        <img src={item.images[0].url} alt="" />
-                            <p className='playlist-name'>{item.name}</p>
-                            <p className='playlist-description'>{item.description}</p>
-                            <p className='playlist-tracks'>{item.tracks.total}</p>
-                            <p className='playlist-followers'>{item.followers.total.toLocaleString()}</p>
+                            {item.images[0] && <img src={item.images[0].url} alt="" />}
+                            {item.name && <p className='playlist-name'>{item.name}</p>}
+                            {item.description && <p className='playlist-description'>{item.description}</p>}
+                            {item.tracks.total && <p className='playlist-tracks'>{item.tracks.total}</p>}
+                            {item.followers.total && <p className='playlist-followers'>{item.followers.total.toLocaleString()}</p>}
                         </PlayListCard>
                     )}
   </>
