@@ -1,6 +1,7 @@
 
 .playlist-card{
     display: flex;
+    align-items: center;
     gap: 10px;
     margin: 10px;
     background-color: rgb(241, 241, 241);
@@ -11,12 +12,14 @@
     width: 75px;
 }
 .playlist-name{
-    flex-basis: 20%;
+    flex-grow: 2;
+    max-width: 15rem;
     font-weight: bold;
     overflow: hidden;
 }
 .playlist-description{
-    flex-basis: 51%;
+    flex-grow: 2;
+    max-width: 24rem;
     padding-right: 3rem;
     padding-top: 0.5rem;
     font-size: 0.9rem;
@@ -25,10 +28,19 @@
 .playlist-name{
     padding-top: 10px;
 }
-.playlist-tracks, .playlist-followers{
-    margin-right: auto;
-    align-self: center;
+.playlist-tracks{
+    flex-grow: 0.5;
+    max-width: 12rem;
+    padding-top: 0.5rem;
+    margin-left: auto;
 }
+.playlist-followers{
+    flex-grow: 0.5;
+    max-width: 12rem;
+    padding-top: 0.5rem;
+
+}
+
 
 .playlist-headers{
     display: flex;
@@ -42,7 +54,7 @@
     left: 38px;
 }
 .playlist-header-name{
-    flex-basis: 76%;
+    flex-grow: 5;
     font-weight: bold;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -51,11 +63,14 @@
     width: 250px;
 }
 .playlist-header-track{
+    flex-grow: 1;
     font-weight: bold;
+    margin-left: 10rem;
 }
 
 .playlist-header-followers{
-    margin-left: 4.4rem;
+    flex-grow: 1;
+
 }
 
 .playlist-buttons{
