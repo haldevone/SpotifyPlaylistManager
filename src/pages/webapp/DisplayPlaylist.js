@@ -58,7 +58,7 @@ const DisplayPlaylist = (props) => {
         if(newDoc[0] != null){
             
             for (let i = 0; i < newDoc[0].playlist.length; i++) {
-                console.log(newDoc[0])
+                // console.log(newDoc[0])
                 if (itemName == newDoc[0].playlist[i].name) {
                     if (isTrack) {
                       const newVal = parseInt(newDoc[0].playlist[i].tracks)
