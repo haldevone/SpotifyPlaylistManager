@@ -37,7 +37,7 @@ function HandlePlaylist() {
 
 
     const GetPlaylist = () => {
-        console.log("getting playlist");
+        // console.log("getting playlist");
         axios.get(PLAYLIST_ENDPOINT, {
             headers: {
                 Authorization: "Bearer " + token,
