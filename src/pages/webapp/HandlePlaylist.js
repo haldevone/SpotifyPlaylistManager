@@ -8,6 +8,7 @@ import { Timestamp } from 'firebase/firestore';
 import ListBase from '../listBase/ListBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { useCollection } from '../../hooks/useCollection';
 
 const PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists/";
 
@@ -20,6 +21,7 @@ function HandlePlaylist() {
     const [dataComplete, setDataComplete] = useState(null);
     const { user } = useAuthContext();
     const {addDocument, response} = useFirestore('playlists');
+    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid])
 
     useEffect(() => {
         if (localStorage.getItem("accessToken")) {
@@ -56,7 +58,7 @@ function HandlePlaylist() {
     }
 
     function handleChildShow(){
-        setShowList(true);
+        documents && setShowList(true);
     }
 
     const handleSaveToFirebase = () => {

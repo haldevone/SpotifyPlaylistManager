@@ -82,7 +82,6 @@ function ListBase(props) {
           }  
         }
       }
-
     }
 
     function AnwserArrow(newColor){

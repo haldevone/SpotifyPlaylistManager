@@ -30,17 +30,22 @@
 }
 .playlist-tracks{
     flex-grow: 0.5;
-    max-width: 12rem;
+    max-width: 13rem;
     padding-top: 0.5rem;
     margin-left: auto;
+    display: flex;
 }
 .playlist-followers{
     flex-grow: 0.5;
-    max-width: 12rem;
+    max-width: 13rem;
     padding-top: 0.5rem;
-
 }
-
+.playlist-followers-div{    
+    display: flex;
+}
+.playlist-arrow{
+    margin-left: 0.5rem;
+}
 
 .playlist-headers{
     display: flex;
