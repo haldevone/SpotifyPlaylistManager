@@ -37,7 +37,6 @@ const DisplayPlaylist = (props) => {
 
     const getFollowers = () => {
         let tempFollowers = [];
-        // console.log(data);
         props.data.data.items.map(item => {
             axios.get(`${FOLLOWERS_ENDPOINT}/${item.id}`, {
                 headers: {

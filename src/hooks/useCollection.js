@@ -22,8 +22,9 @@ export const useCollection = (collectionName, createdAt, _q) => {
                 
                 setDocuments(results);
                 setError(null);
-        }, (error) => {
+        }, (err) => {
             setError('Could not fetch the data');
+            console.log(err);
         });
 
         return () => {unsubscribe()

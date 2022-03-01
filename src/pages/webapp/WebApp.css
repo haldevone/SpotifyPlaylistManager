@@ -21,6 +21,30 @@
     color: var(--color-primary);
   }
 
+  .btn-form{
+    background: var(--color-light);
+    padding: 12px 12px;
+    border-radius: 10px;
+    color: var(--color-secondary);
+    font-size: var(--fs-p);
+    border: none;
+    transition: all 0.2s;
+  }
+
+  
+  .btn-form:hover{
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+    /* background-color: var(--color-lightHover); */
+    cursor: pointer;
+  }
+  .btn-form:active{
+    transform: translateY(0);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+    background: var(--color-btn);
+    color: var(--color-primary);
+  }
+
 
   /* WEBAPP */
   .webapp-btns{

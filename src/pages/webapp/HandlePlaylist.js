@@ -9,6 +9,7 @@ import ListBase from '../listBase/ListBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useCollection } from '../../hooks/useCollection';
+import PlaylistCopy from './PlaylistCopy';
 
 const PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists/";
 
@@ -18,6 +19,7 @@ function HandlePlaylist() {
     const [data, setData] = useState(null);
     const [showList, setShowList] = useState(false);
     const [switchListbase, setSwitchListbase] = useState(false);
+    const [switchListCopy, setSwitchListCopy] = useState(false);
     const [dataComplete, setDataComplete] = useState(null);
     const { user } = useAuthContext();
     const {addDocument, response} = useFirestore('playlists');
@@ -78,28 +80,29 @@ function HandlePlaylist() {
             });
         }
     }
-    
 
     return (
         <>
         <div className='playlist-container'>
         {response.success && <p className='playlist-message'>Saved To Database!</p>}
             <div className='playlist-buttons'>
-                {!switchListbase ? <button className='btn-big playlist-btn' onClick={() => handleChildShow()}>Get Playlist</button> :
-                <button className='btn-big playlist-btn' onClick={() => window.location.reload(false)}><FontAwesomeIcon icon={faArrowLeft} /> Back</button>}
-                {(dataComplete && !switchListbase  ) &&
+                {(!switchListbase && !switchListCopy) ? <button className='btn-big playlist-btn' onClick={() => handleChildShow()}>Get Playlist</button> :
+                <button className='btn-big playlist-btn' onClick={() => window.location.reload(false)}>
+                    <FontAwesomeIcon icon={faArrowLeft} /> Back</button>}
+                {(dataComplete && !switchListbase && !switchListCopy) &&
                 <div>
                     <button className='btn-big playlist-btn' onClick={handleSaveToFirebase}>Save To Database</button>
                     <button className='btn-big playlist-btn' onClick={() => setSwitchListbase(true)}>Compare Database</button>
+                    <button className='btn-big playlist-btn' onClick={() => setSwitchListCopy(true)}>Copy Playlists</button>
                 </div>}
             </div>
-            {switchListbase ? <ListBase dataComplete={dataComplete}/> : 
+            {switchListCopy ? <PlaylistCopy data={data} token={token}/> : (switchListbase ? <ListBase dataComplete={dataComplete}/> : 
            (data && <DisplayPlaylist 
            token={token} 
            data={data} 
            ParentData={handleCallback}
            showList={showList}
-           />)}
+           />))}
         </div>
         </>
     )

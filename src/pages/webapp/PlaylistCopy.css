@@ -1,0 +1,96 @@
+
+.listcopy{
+    width: 24%;
+    background-color: var(--color-btn);
+    height: 19rem;
+    color: white;
+    border-radius: 10px;
+    font-size: var(--fs-h5);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.listcopy-item{
+    margin-left: 2rem;
+    padding-top: 1rem;
+    
+}
+
+/* .listcopy-options-select{
+    color: var(--color-lightGray);
+} */
+
+.listcopy-select{
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: var(--fs-h6);
+    display: block;
+
+}
+
+.listcopy-options{
+    padding: 0.3rem;
+    font-family: Sora, sans-serif;
+    font-size: var(--fs-h6);
+    color: var(--color-secondary);
+    border-radius: 4px;
+    border: none;
+}
+
+.listcopy-options-select{
+    color: var(--color-lightGray);
+}
+
+.padding-top-2{
+    padding-top: 2rem;
+  }
+
+
+  /* Card */
+  .listcopy-card-container{
+    display: flex;
+  }
+  .listcopy-card{
+      display: flex;
+      border-radius: 6px;
+      background-color: var(--color-btn);
+      margin: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .btn-copy{
+    background: rgb(209, 52, 52);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    border: none;
+    color: white;
+    font-size: var(--fs-h5);
+    position: absolute;
+    top: -2rem;
+    right: -2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-copy:hover{
+    background: rgb(226, 80, 80);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-3px);
+  }
+  .btn-copy:active{
+    transform: scale(0.95);
+  }
+
+  .listcopy-card-fromTo-flex{
+      display: flex;
+      margin-bottom: 0.5rem;
+  }
+
+  .listcopy-card-fromTo{
+      background-color: white;
+      padding: 0.1rem;
+      border-radius: 4px;
+      margin-right: 0.1rem;
+  }

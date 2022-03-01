@@ -5,11 +5,11 @@ import './WebApp.css'
 
 const CLIENT_ID = process.env.REACT_APP_CLIENTID;
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URI_AFTER_LOGIN = "https://spotifyplaylistmanager.netlify.app";
+const REDIRECT_URI_AFTER_LOGIN = "http://localhost:3000/";
 // "https://spotifyplaylistmanager.netlify.app"
 //http://localhost:3000/
 
-const SCOPES = ["playlist-read-private user-follow-read playlist-read-collaborative"];
+const SCOPES = ["playlist-read-private user-follow-read playlist-read-collaborative playlist-modify-private"];
 const SCOPES_URL_PARAM = SCOPES.join("%20");
 
 const getReturnedParamsFromSpotifyAuth = (hash) => {

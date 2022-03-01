@@ -5,14 +5,17 @@
   --fs-h3: 1.8rem;
   --fs-h4: 1.5rem;
   --fs-h5: 1.2rem;
+  --fs-h6: 1.1rem;
   --fs-p: 1rem;
 
   --color-primary: rgb(238, 238, 238);
   --color-secondary: rgb(63, 59, 59);
   --color-lightGray: #777;
 
-  --color-btn: rgb(79, 168, 70);
+  --color-btn: #139A43;
   --color-btn-selected: rgb(92, 202, 80);
+  --color-light: #DFF3E3;
+  --color-lightHover:rgb(206, 241, 213)3;
 }
 *{
   margin: 0;
@@ -56,3 +59,12 @@ ul{
 .btn:active{
   transform: scale(0.95);
 }
+
+.center{
+  text-align: center;
+}
+
+.margin-top-2{
+  margin-top: 2rem;
+}
+
