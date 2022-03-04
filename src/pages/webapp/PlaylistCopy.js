@@ -10,19 +10,26 @@ import axios from 'axios';
 
 
 function PlaylistCopy(props) {
-    const [fromCopy, setFromCopy] = useState();
-    const [toCopy, setToCopy] = useState();
+    const [fromCopy, setFromCopy] = useState({name: "", playlistId: ""});
+    const [toCopy, setToCopy] = useState({name: "", playlistId: ""});
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
 
     function handleChangeFROM(e){
-        // console.log(e.target.value);
-        setFromCopy(e.target.value);
+        console.log(e.target.value);
+        setFromCopy({name: e.target.value, playlistId: findID(e.target.value)});
     }
 
     function handleChangeTO(e){
-        // console.log(e.target.value);
-        setToCopy(e.target.value);
+        
+        setToCopy({name: e.target.value, playlistId: findID(e.target.value)});
+    }
+
+    function findID(name){
+        let foundPlaylist = props.data.data.items.filter(item => {
+            return item.name == name;
+        })
+        return foundPlaylist[0].id;
     }
 
     function saveToDataBase(){
@@ -39,9 +46,8 @@ function PlaylistCopy(props) {
         setFromCopy("");
     }
 
-    const getPlaylist = () => {
-        props.data.data.items.map(item => {
-            axios.get(`https://api.spotify.com/v1/playlists/${item.id}/tracks`, {
+    const getTracks = (playlistFrom) => {
+        axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
                 headers: {
                     Authorization: "Bearer " + props.token,
                 },
@@ -52,12 +58,23 @@ function PlaylistCopy(props) {
             .catch((error) => {
                 console.log(error);
             })
-        })
     }
 
-    useEffect(() => {
-        getPlaylist();
-    }, [response])
+    const deleteTracks = (playlistFrom) => {
+        axios.delete(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
+                headers: {
+                    Authorization: "Bearer " + props.token,
+                    'Content-Type': [{uri: "spotify:track:4KxCY17B9zHKVRn1jeVmVX"}],
+                },
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
 
   return (
     <div>
@@ -65,7 +82,7 @@ function PlaylistCopy(props) {
         <div className='listcopy'>
             <div className='listcopy-item padding-top-2'>
                 <label>Select copy FROM: </label>
-                <select className='listcopy-options' onChange={(e) => handleChangeFROM(e)} value={fromCopy}>
+                <select className='listcopy-options' onChange={(e) => handleChangeFROM(e)} value={fromCopy.name}>
                 <option className='listcopy-options listcopy-options-select' >{"Select From..."}</option>
                     {props.data.data.items.map((data, i) => {
                         return (
@@ -76,7 +93,7 @@ function PlaylistCopy(props) {
             </div>
             <div className='listcopy-item'>
                 <label>Select copy TO: </label>
-                <select className='listcopy-options' onChange={(e) => handleChangeTO(e)} value={toCopy}>
+                <select className='listcopy-options' onChange={(e) => handleChangeTO(e)} value={toCopy.name}>
                 <option className='listcopy-options listcopy-options-select' >{"Select To..."}</option>
                     {props.data.data.items.map((data, i) => {
                         return (
@@ -89,7 +106,7 @@ function PlaylistCopy(props) {
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
         </div>
-        <PlaylistCopyDisplay />
+        <PlaylistCopyDisplay deleteTracks={deleteTracks}/>
     </div>
   )
 }

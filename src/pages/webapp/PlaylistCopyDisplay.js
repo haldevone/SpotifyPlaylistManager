@@ -4,7 +4,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import { useEffect } from 'react';
 import useFirestore from '../../hooks/useFirestore';
 
-function PlaylistCopyDisplay() {
+function PlaylistCopyDisplay({deleteTracks}) {
     const { user } = useAuthContext();
     const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
     const { deleteDocument } = useFirestore('listcopy');
@@ -23,14 +23,14 @@ function PlaylistCopyDisplay() {
                 <div>
                   <div className='listcopy-card-fromTo-flex'>
                     <p className='listcopy-card-fromTo'>From: </p>
-                    <p>{list.listCopy.fromCopy}</p>
+                    <p>{list.listCopy.fromCopy.name}</p>
                   </div>
                   <div className='listcopy-card-fromTo-flex'>
                     <p className='listcopy-card-fromTo'>To: </p>
-                    <p>{list.listCopy.toCopy}</p>
+                    <p>{list.listCopy.toCopy.name}</p>
                   </div>
                 </div>
-                <button className='btn-form' style={{marginLeft:"1.5rem"}}>COPY</button>
+                <button className='btn-form' onClick={() => deleteTracks(list.listCopy.toCopy.playlistId)} style={{marginLeft:"1.5rem"}}>COPY</button>
                 <div style={{position:"relative"}}>
                   <button className='btn-copy' onClick={() => deleteDocument(list.id)}>x</button>
                 </div>
