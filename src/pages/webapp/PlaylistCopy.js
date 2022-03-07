@@ -5,7 +5,7 @@ import useFirestore from '../../hooks/useFirestore';
 import { Timestamp } from 'firebase/firestore';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import './PlayListCard.css'
-import PlaylistCopyDisplay from './PlaylistCopyDisplay';
+import PlaylistCopyCards from './PlaylistCopyCards';
 import axios from 'axios';
 
 
@@ -14,6 +14,8 @@ function PlaylistCopy(props) {
     const [toCopy, setToCopy] = useState({name: "", playlistId: ""});
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
+    // const [message, setMessage] = useState(false);
+
 
     function handleChangeFROM(e){
         console.log(e.target.value);
@@ -46,33 +48,77 @@ function PlaylistCopy(props) {
         setFromCopy("");
     }
 
-    const getTracks = (playlistFrom) => {
-        axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
+    const copyButton = (playlistFrom, playlistTo) => {
+        const token = props.token
+        const data = {limit: 40}
+        axios.all([
+            axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
                 headers: {
-                    Authorization: "Bearer " + props.token,
+                    Authorization: "Bearer " + token,
                 },
+                // data: {
+                //     limit: 50
+                // }
+            },data),
+            axios.get(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
             })
+        ])
             .then((res) => {
-                console.log(res);
+                console.log(res[0]);
+                axios.delete(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                    data: {
+                        tracks: tracksArrayDelete(res[1])
+                        // tracks: [{uri: "spotify:track:77z6mJeFcHlRWVfbOdBCtc"}] Example removing one track
+                    }
+                })
+                .then((res2) => {
+                    // console.log(res[1])
+                    const newData = {
+                        uris: tracksArrayCopy(res[0])
+                    }
+                    axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                        },
+                        
+                    }).then((res3) => {
+                        // console.log(res3);
+                    }) .catch((error) => {
+                        console.log(error);
+                    })
+                    // console.log(res[0]);
+                })
             })
             .catch((error) => {
                 console.log(error);
             })
     }
 
-    const deleteTracks = (playlistFrom) => {
-        axios.delete(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
-                headers: {
-                    Authorization: "Bearer " + props.token,
-                    'Content-Type': [{uri: "spotify:track:4KxCY17B9zHKVRn1jeVmVX"}],
-                },
-            })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+    function tracksArrayDelete(inputData){
+        let totI = 0;
+        let totalTracks = [{uri:""}]
+        totalTracks =  inputData.data.items.map( (item, i) => {
+            totI = i;
+            return {uri : item.track.uri}
+        })
+        console.log(totI);
+        return totalTracks
+    }
+
+    function tracksArrayCopy(inputData){
+        
+        let totalTracks = []
+        totalTracks =  inputData.data.items.map( (item, i) => {
+            return item.track.uri
+        })
+        // console.log(totalTracks);
+        return totalTracks
     }
 
 
@@ -106,7 +152,7 @@ function PlaylistCopy(props) {
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
         </div>
-        <PlaylistCopyDisplay deleteTracks={deleteTracks}/>
+        <PlaylistCopyCards copyButton={copyButton} data={props.data}/>
     </div>
   )
 }

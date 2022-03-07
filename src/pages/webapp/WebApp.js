@@ -9,7 +9,7 @@ const REDIRECT_URI_AFTER_LOGIN = "http://localhost:3000/";
 // "https://spotifyplaylistmanager.netlify.app"
 //http://localhost:3000/
 
-const SCOPES = ["playlist-read-private user-follow-read playlist-read-collaborative playlist-modify-private"];
+const SCOPES = ["playlist-read-private user-follow-read user-library-modify playlist-read-collaborative playlist-modify-private playlist-modify-public"];
 const SCOPES_URL_PARAM = SCOPES.join("%20");
 
 const getReturnedParamsFromSpotifyAuth = (hash) => {

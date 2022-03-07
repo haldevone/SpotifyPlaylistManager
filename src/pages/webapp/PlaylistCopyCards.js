@@ -3,8 +3,10 @@ import { useCollection } from '../../hooks/useCollection';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useEffect } from 'react';
 import useFirestore from '../../hooks/useFirestore';
+import './PlayListCard.css'
+import "./PlaylistCopy.css"
 
-function PlaylistCopyDisplay({deleteTracks}) {
+function PlaylistCopyCards({copyButton, data}) {
     const { user } = useAuthContext();
     const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
     const { deleteDocument } = useFirestore('listcopy');
@@ -29,8 +31,20 @@ function PlaylistCopyDisplay({deleteTracks}) {
                     <p className='listcopy-card-fromTo'>To: </p>
                     <p>{list.listCopy.toCopy.name}</p>
                   </div>
+                  <div className='listcopy-card-fromTo-flex'>
+                    <p className='listcopy-card-fromTo'>Mix With: </p>
+                    <select className='listcopy-options'>
+                    <option className='listcopy-options listcopy-options-select'>{"..."}</option>
+                    {data.data.items.map((data, i) => {
+                        return (
+                            <option key={i} className='listcopy-options'>{data.name}</option>
+                        )
+                    })}
+                    </select>
+                    
+                  </div>
                 </div>
-                <button className='btn-form' onClick={() => deleteTracks(list.listCopy.toCopy.playlistId)} style={{marginLeft:"1.5rem"}}>COPY</button>
+                <button className='btn-form' onClick={() => copyButton(list.listCopy.fromCopy.playlistId, list.listCopy.toCopy.playlistId)} style={{marginLeft:"1.5rem"}}>COPY</button>
                 <div style={{position:"relative"}}>
                   <button className='btn-copy' onClick={() => deleteDocument(list.id)}>x</button>
                 </div>
@@ -41,4 +55,4 @@ function PlaylistCopyDisplay({deleteTracks}) {
   )
 }
 
-export default PlaylistCopyDisplay
+export default PlaylistCopyCards
