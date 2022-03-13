@@ -14,7 +14,7 @@ function PlaylistCopy(props) {
     const [toCopy, setToCopy] = useState({name: "", playlistId: ""});
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
-    // const [message, setMessage] = useState(false);
+    const [copyComplete, setCopycomplete] = useState(false);
 
 
     function handleChangeFROM(e){
@@ -48,98 +48,144 @@ function PlaylistCopy(props) {
         setFromCopy("");
     }
 
-    function copyButton(playlistFrom, playlistTo){
+    function copyButton(playlistFrom, playlistTo, cardId){
+        console.log("Deleting...")
         const token = props.token;
+        const getURL = `https://api.spotify.com/v1/playlists/${playlistTo}/tracks`;
         //DELETE TO FOLDER
-        axios.get(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
+        axios.get(getURL, {
             headers: {
                 Authorization: "Bearer " + token,
             }
         }).then((res) => {
             //Delete 0-100
-            axios.delete(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
+            console.log("Deleting 100")
+            console.log(res);
+            axios.delete(getURL, {
                 headers: {
                     Authorization: "Bearer " + token,
                 },
                 data: {
                     tracks: tracksArrayDelete(res)
                 }
-            })
-            if(res.data.next != null){
-                axios.get(res.data.next, {
+            }).then((resDel) => {
+                if(res.data.next == null){
+                    copyTo(playlistFrom, playlistTo);
+                    return
+                }
+                axios.get(getURL, {
                 headers: {
                     Authorization: "Bearer " + token,
                 }
                 }).then((res2) => {
                     //Delete 100-200
                     console.log("Deleting 200")
-                    axios.delete(res.data.next, {
+                    axios.delete(getURL, {
                         headers: {
                             Authorization: "Bearer " + token,
                         },
                         data: {
                             tracks: tracksArrayDelete(res2)
                         }
-                    })
-                    if (res2.data.next == null) return 
-                    axios.get(res2.data.next, {
-                        headers: {
-                            Authorization: "Bearer " + token,
-                        }
-                    }).then((res3) => {
-                        //Delete 200-300
-                        console.log("Deleting 300")
-                        axios.delete(res2.data.next, {
-                            headers: {
-                                Authorization: "Bearer " + token,
-                            },
-                            data: {
-                                tracks: tracksArrayDelete(res3)
-                            }
-                        })
-                        if (res3.data.next == null) return 
-                        axios.get(res3.data.next, {
+                    }).then((resDel2) => {
+                        if (res2.data.next == null){
+                            copyTo(playlistFrom, playlistTo);
+                            return
+                        } 
+                        axios.get(getURL, {
                             headers: {
                                 Authorization: "Bearer " + token,
                             }
-                        }).then((res4) => {
-                            //Delete 300-400
-                            console.log("Deleting 400")
-                            axios.delete(res3.data.next, {
+                        }).then((res3) => {
+                            //Delete 200-300
+                            console.log("Deleting 300")
+                            axios.delete(getURL, {
                                 headers: {
                                     Authorization: "Bearer " + token,
                                 },
                                 data: {
-                                    tracks: tracksArrayDelete(res4)
+                                    tracks: tracksArrayDelete(res3)
                                 }
-                            })
-                            if (res4.data.next == null) return 
-                            axios.get(res4.data.next, {
-                                headers: {
-                                    Authorization: "Bearer " + token,
-                                }
-                            }).then((res5) => {
-                                //Delete 400-500
-                                console.log("Deleting 500")
-                                axios.delete(res4.data.next, {
+                            }).then((resDel3) => {
+                                if (res3.data.next == null){
+                                    copyTo(playlistFrom, playlistTo);
+                                    return
+                                } 
+                                axios.get(getURL, {
                                     headers: {
                                         Authorization: "Bearer " + token,
-                                    },
-                                    data: {
-                                        tracks: tracksArrayDelete(res5)
                                     }
+                                }).then((res4) => {
+                                    //Delete 300-400
+                                    console.log("Deleting 400")
+                                    axios.delete(getURL, {
+                                        headers: {
+                                            Authorization: "Bearer " + token,
+                                        },
+                                        data: {
+                                            tracks: tracksArrayDelete(res4)
+                                        }
+                                    }).then((resDel4) => {
+                                        if (res4.data.next == null){
+                                            copyTo(playlistFrom, playlistTo);
+                                            return
+                                        } 
+                                        axios.get(getURL, {
+                                            headers: {
+                                                Authorization: "Bearer " + token,
+                                            }
+                                        }).then((res5) => {
+                                            //Delete 400-500
+                                            console.log("Deleting 500")
+                                            axios.delete(getURL, {
+                                                headers: {
+                                                    Authorization: "Bearer " + token,
+                                                },
+                                                data: {
+                                                    tracks: tracksArrayDelete(res5)
+                                                }
+                                            }).then((resDel5) => {
+                                                if (res5.data.next == null){
+                                                    copyTo(playlistFrom, playlistTo);
+                                                    return
+                                                }
+                                                axios.get(getURL, {
+                                                    headers: {
+                                                        Authorization: "Bearer " + token,
+                                                    }
+                                                }).then((res6) => {
+                                                    //Delete 500-600
+                                                    console.log("Deleting 600")
+                                                    axios.delete(getURL, {
+                                                        headers: {
+                                                            Authorization: "Bearer " + token,
+                                                        },
+                                                        data: {
+                                                            tracks: tracksArrayDelete(res6)
+                                                        }
+                                                    }).then((resDel6) =>{
+                                                        copyTo(playlistFrom, playlistTo);
+                                                    })
+                                                })
+                                            })
+                                        })
+                                    })
                                 })
                             })
                         })
                     })
                 })
-            }
+            })
+            
         }) .catch((error) => {
             console.log(error);
         })
-        console.log("DELETE complete");
+    }
 
+    function copyTo(playlistFrom, playlistTo){
         //COPY STARTS HERE
+        console.log("Posting...");
+        const token = props.token;
         axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
             headers: {
                 Authorization: "Bearer " + token,
@@ -165,68 +211,112 @@ function PlaylistCopy(props) {
                             Authorization: "Bearer " + token,
                         }
                     }).then((resPost2) => {
-                        if (resGet.data.next == null) return 
+                        if (resGet2.data.next == null) return
+                        axios.get(resGet2.data.next, {
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            }
+                        }).then((resGet3) => {
+                            console.log("Post 300");
+                            const newData = {uris: tracksArrayCopy(resGet3)}
+                            axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                                headers: {
+                                    Authorization: "Bearer " + token,
+                                }
+                            }).then((resPost3) => {
+                                if (resGet3.data.next == null) return
+                                axios.get(resGet3.data.next, {
+                                    headers: {
+                                        Authorization: "Bearer " + token,
+                                    }
+                                }).then((resGet4) => {
+                                    console.log("Post 400");
+                                    const newData = {uris: tracksArrayCopy(resGet4)}
+                                    axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                                        headers: {
+                                            Authorization: "Bearer " + token,
+                                        }
+                                    }).then((resPost4) => {
+                                        if (resGet4.data.next == null) return
+                                        axios.get(resGet4.data.next, {
+                                            headers: {
+                                                Authorization: "Bearer " + token,
+                                            }
+                                        }).then((resGet5) => {
+                                            console.log("Post 500");
+                                            const newData = {uris: tracksArrayCopy(resGet5)}
+                                            axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                                                headers: {
+                                                    Authorization: "Bearer " + token,
+                                                }
+                                            })
+                                        })
+                                    })
+                                })
+                            })
+                        })
                     })
                 })
             })
         })
-
+        //COPY COMPLETE
+        setCopycomplete(true);
     }
 
-    const copyButtonX = (playlistFrom, playlistTo) => {
-        const token = props.token
-        const data = {limit: 40}
-        axios.all([
-            axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-                // data: {
-                //     limit: 50
-                // }
-            },data),
-            axios.get(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
-                headers: {
-                    Authorization: "Bearer " + token,
-                }
-            })
-        ])
-            .then((res) => {
-                console.log(res[0]);
-                axios.delete(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
-                    headers: {
-                        Authorization: "Bearer " + token,
-                    },
-                    data: {
-                        tracks: tracksArrayDelete(res[1])
-                        // tracks: [{uri: "spotify:track:77z6mJeFcHlRWVfbOdBCtc"}] Example removing one track
-                    }
-                })
-                .then((res2) => {
-                    // console.log(res[1])
-                    const newData = {
-                        uris: tracksArrayCopy(res[0])
-                    }
-                    axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
-                        headers: {
-                            Authorization: "Bearer " + token,
-                        },
+    // const copyButtonX = (playlistFrom, playlistTo) => {
+    //     const token = props.token
+    //     const data = {limit: 40}
+    //     axios.all([
+    //         axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
+    //             headers: {
+    //                 Authorization: "Bearer " + token,
+    //             },
+    //             // data: {
+    //             //     limit: 50
+    //             // }
+    //         },data),
+    //         axios.get(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
+    //             headers: {
+    //                 Authorization: "Bearer " + token,
+    //             }
+    //         })
+    //     ])
+    //         .then((res) => {
+    //             console.log(res[0]);
+    //             axios.delete(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, {
+    //                 headers: {
+    //                     Authorization: "Bearer " + token,
+    //                 },
+    //                 data: {
+    //                     tracks: tracksArrayDelete(res[1])
+    //                     // tracks: [{uri: "spotify:track:77z6mJeFcHlRWVfbOdBCtc"}] Example removing one track
+    //                 }
+    //             })
+    //             .then((res2) => {
+    //                 // console.log(res[1])
+    //                 const newData = {
+    //                     uris: tracksArrayCopy(res[0])
+    //                 }
+    //                 axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+    //                     headers: {
+    //                         Authorization: "Bearer " + token,
+    //                     },
                         
-                    }).then((res3) => {
-                        // console.log(res3);
-                    }) .catch((error) => {
-                        console.log(error);
-                    })
-                    // console.log(res[0]);
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    //                 }).then((res3) => {
+    //                     // console.log(res3);
+    //                 }) .catch((error) => {
+    //                     console.log(error);
+    //                 })
+    //                 // console.log(res[0]);
+    //             })
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         })
+    // }
 
     function tracksArrayDelete(inputData){
-        console.log(inputData);
+        // console.log(inputData);
         let totI = 0;
         let totalTracks = [{uri:""}]
         totalTracks =  inputData.data.items.map( (item, i) => {
@@ -252,8 +342,8 @@ function PlaylistCopy(props) {
     <div>
             {response.success && <p className='playlist-message'>Saved To Database!</p>}
         <div className='listcopy'>
-            <div className='listcopy-item padding-top-2'>
-                <label>Select copy FROM: </label>
+            <div className='listcopy-item'>
+                <label>Select Copy From: </label>
                 <select className='listcopy-options' onChange={(e) => handleChangeFROM(e)} value={fromCopy.name}>
                 <option className='listcopy-options listcopy-options-select' >{"Select From..."}</option>
                     {props.data.data.items.map((data, i) => {
@@ -264,7 +354,7 @@ function PlaylistCopy(props) {
                 </select>
             </div>
             <div className='listcopy-item'>
-                <label>Select copy TO: </label>
+                <label>Select Copt To: </label>
                 <select className='listcopy-options' onChange={(e) => handleChangeTO(e)} value={toCopy.name}>
                 <option className='listcopy-options listcopy-options-select' >{"Select To..."}</option>
                     {props.data.data.items.map((data, i) => {
@@ -274,11 +364,11 @@ function PlaylistCopy(props) {
                     })}
                 </select>
             </div>
-            <div className='center margin-top-2'>
+            <div className='listcopy-item-btn'>
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
         </div>
-        <PlaylistCopyCards copyButton={copyButton} data={props.data}/>
+        <PlaylistCopyCards copyButton={copyButton} data={props.data} copyComplete={copyComplete}/>
     </div>
   )
 }

@@ -1,38 +1,54 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { useCollection } from '../../hooks/useCollection';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useEffect } from 'react';
 import useFirestore from '../../hooks/useFirestore';
 import './PlayListCard.css'
 import "./PlaylistCopy.css"
+import Message from './Message';
 
-function PlaylistCopyCards({copyButton, data}) {
+function PlaylistCopyCards({copyButton, data, copyComplete}) {
     const { user } = useAuthContext();
     const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
     const { deleteDocument } = useFirestore('listcopy');
+    const [showMessage, setShowMessage] = useState(false);
+    
+    const cardId = useRef();
 
-    // useEffect(() => {
-
-    // }, [documents]);
+    function copyComplete(){
+      console.log(copyComplete)
+      if (copyComplete.complete) {
+        setShowMessage(true)
+      }
+    }
 
   return (
     <div>
     <h1>Copy lists</h1>
     {/* {console.log(documents)} */}
         <div className={"listcopy-card-container"}>
+        {/* {copyComplete => copyComplete()} */}
             {documents && documents.map((list,i) => {
+              cardId.current = i;
              return ( <div key={i} className={"listcopy-card"}>
-                <div>
-                  <div className='listcopy-card-fromTo-flex'>
-                    <p className='listcopy-card-fromTo'>From: </p>
-                    <p>{list.listCopy.fromCopy.name}</p>
+             <div style={{position:"relative"}}>
+                  <button className='btn-copy' onClick={() => deleteDocument(list.id)}>x</button>
+                </div>
+             <div className='listcopy-card-head-info'>
+               <p className='listcopy-card-nr'>{i+1}</p>
+               <div className='listcopy-card-message'>{showMessage && <Message note={"Copy Complete"}/>}</div>
+             </div>
+                <div className='listcopy-card-inner'>
+                  <div className='listcopy-card-fromTo-div'>
+                    <p>From: </p>
+                    <p className='listcopy-card-fromTo'>{list.listCopy.fromCopy.name}</p>
                   </div>
-                  <div className='listcopy-card-fromTo-flex'>
-                    <p className='listcopy-card-fromTo'>To: </p>
-                    <p>{list.listCopy.toCopy.name}</p>
+                  <div className='listcopy-card-fromTo-div'>
+                    <p>To: </p>
+                    <p className='listcopy-card-fromTo'>{list.listCopy.toCopy.name}</p>
                   </div>
-                  <div className='listcopy-card-fromTo-flex'>
-                    <p className='listcopy-card-fromTo'>Mix With: </p>
+                  <div className='listcopy-card-fromTo-div'>
+                    <p>Mix With: </p>
                     <select className='listcopy-options'>
                     <option className='listcopy-options listcopy-options-select'>{"..."}</option>
                     {data.data.items.map((data, i) => {
@@ -41,12 +57,8 @@ function PlaylistCopyCards({copyButton, data}) {
                         )
                     })}
                     </select>
-                    
                   </div>
-                </div>
-                <button className='btn-form' onClick={() => copyButton(list.listCopy.fromCopy.playlistId, list.listCopy.toCopy.playlistId)} style={{marginLeft:"1.5rem"}}>COPY</button>
-                <div style={{position:"relative"}}>
-                  <button className='btn-copy' onClick={() => deleteDocument(list.id)}>x</button>
+                  <button className='btn-form' onClick={() => copyButton(list.listCopy.fromCopy.playlistId, list.listCopy.toCopy.playlistId, cardId.current)}>Copy</button>
                 </div>
               </div>)
             })}

@@ -22,11 +22,12 @@
   }
 
   .btn-form{
-    background: var(--color-light);
-    padding: 12px 12px;
+    background: var(--color-gray);
+    padding: 16px 12px;
     border-radius: 10px;
-    color: var(--color-secondary);
-    font-size: var(--fs-p);
+    font-weight: bold;
+    color: var(--color-primary);
+    font-size: var(--fs-h5);
     border: none;
     transition: all 0.2s;
   }
@@ -34,7 +35,7 @@
   
   .btn-form:hover{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     /* background-color: var(--color-lightHover); */
     cursor: pointer;
   }
@@ -55,4 +56,16 @@
 /* GETPLAYLIST */
   .playlist-container{
   margin-top: 10rem;
+  }
+
+  /* MESSAGE */
+  .message{
+    display: inline;
+    text-align: center;
+    background-color: rgb(235, 212, 11);
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    color: var(--color-gray);
+    font-size: var(--fs-h5);
   }

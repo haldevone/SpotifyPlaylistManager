@@ -11,6 +11,9 @@
   --color-primary: rgb(238, 238, 238);
   --color-secondary: rgb(63, 59, 59);
   --color-lightGray: #777;
+  --color-green: #00c300;
+  --color-lightgreen: #07d807;
+  --color-gray: #444444;
 
   --color-btn: #139A43;
   --color-btn-selected: rgb(92, 202, 80);
