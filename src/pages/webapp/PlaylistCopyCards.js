@@ -12,6 +12,7 @@ function PlaylistCopyCards({copyButton, data, copyComplete}) {
     const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
     const { deleteDocument } = useFirestore('listcopy');
     const [showMessage, setShowMessage] = useState(false);
+    const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
     
     const cardId = useRef();
 
@@ -21,6 +22,21 @@ function PlaylistCopyCards({copyButton, data, copyComplete}) {
         setShowMessage(true)
       }
     }
+
+    function handleChangeMix(e){
+      console.log(e.target.value);
+      setMixWith({name: e.target.value, playlistId: findID(e.target.value)});
+  }
+
+  function findID(name){
+    if (name == "...") {
+      return
+    }
+    let foundPlaylist = data.data.items.filter(item => {
+        return item.name == name;
+    })
+    return foundPlaylist[0].id;
+}
 
   return (
     <div>
@@ -49,7 +65,7 @@ function PlaylistCopyCards({copyButton, data, copyComplete}) {
                   </div>
                   <div className='listcopy-card-fromTo-div'>
                     <p>Mix With: </p>
-                    <select className='listcopy-options'>
+                    <select className='listcopy-options' value={mixWith.name} onChange={(e) => handleChangeMix(e)} >
                     <option className='listcopy-options listcopy-options-select'>{"..."}</option>
                     {data.data.items.map((data, i) => {
                         return (
@@ -58,7 +74,7 @@ function PlaylistCopyCards({copyButton, data, copyComplete}) {
                     })}
                     </select>
                   </div>
-                  <button className='btn-form' onClick={() => copyButton(list.listCopy.fromCopy.playlistId, list.listCopy.toCopy.playlistId, cardId.current)}>Copy</button>
+                  <button className='btn-form' onClick={() => copyButton(list.listCopy.fromCopy.playlistId, list.listCopy.toCopy.playlistId, mixWith.playlistId)}>Copy</button>
                 </div>
               </div>)
             })}
