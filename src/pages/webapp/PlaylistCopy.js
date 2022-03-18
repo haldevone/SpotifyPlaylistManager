@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import "./PlaylistCopy.css"
 import "../../pages/../index.css"
 import useFirestore from '../../hooks/useFirestore';
 import { Timestamp } from 'firebase/firestore';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import { useCollection } from '../../hooks/useCollection';
 import './PlayListCard.css'
-import PlaylistCopyCards from './PlaylistCopyCards';
+import "./PlaylistCopy.css"
 import axios from 'axios';
+import PlayListCopyCard from './PlayListCopyCard';
 
 var tempList = [];
 
@@ -16,7 +17,8 @@ function PlaylistCopy(props) {
     const [toCopy, setToCopy] = useState({name: "", playlistId: ""});
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
-    const [copyComplete, setCopycomplete] = useState(false);
+    const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
+    const [copyComplete, setCopycomplete] = useState(-1);
 
     function handleChangeFROM(e){
         console.log(e.target.value);
@@ -49,7 +51,7 @@ function PlaylistCopy(props) {
         setFromCopy("");
     }
 
-    function copyButtonX(playlistFrom, playlistTo, playlistMix){
+    function copyButton(playlistFrom, playlistTo, playlistMix, cardId){
         console.log("Deleting...")
         const token = props.token;
         const getURL = `https://api.spotify.com/v1/playlists/${playlistTo}/tracks`;
@@ -71,7 +73,7 @@ function PlaylistCopy(props) {
                 }
             }).then((resDel) => {
                 if(res.data.next == null){
-                    copyTo(playlistFrom, playlistTo, playlistMix);
+                    copyTo(playlistFrom, playlistTo, playlistMix, cardId);
                     return
                 }
                 axios.get(getURL, {
@@ -182,11 +184,11 @@ function PlaylistCopy(props) {
             console.log(error);
         })
     }
-    function copyTo(playlistFrom, playlistTo, playlistMix){
+    // function copyTo(playlistFrom, playlistTo, playlistMix){
 
-    }
+    // }
 
-    function copyButton(playlistFrom, playlistTo, playlistMix){
+    function copyTo(playlistFrom, playlistTo, playlistMix, cardId){
         //COPY STARTS HERE
         const token = props.token;
         tempList = [] //Reset templist
@@ -200,7 +202,11 @@ function PlaylistCopy(props) {
             tempTotalList(resGet);
             if (resGet.data.next == null){
                 //NEXT STEP!!
-                addMix(playlistMix)
+                if (playlistMix == "" || playlistMix == null) {
+                    addNoMix(playlistTo, cardId)
+                }else{
+                    addMix(playlistMix, playlistTo, cardId)
+                }
                 return
             }
             axios.get(resGet.data.next, {
@@ -212,7 +218,11 @@ function PlaylistCopy(props) {
                 tempTotalList(resGet2);
                 if (resGet2.data.next == null){
                     //NEXT STEP!!
-                    addMix(playlistMix)
+                    if (playlistMix == "" || playlistMix == null) {
+                        addNoMix(playlistTo, cardId)
+                    }else{
+                        addMix(playlistMix, playlistTo, cardId)
+                    }
                     return
                 }
                 axios.get(resGet2.data.next, {
@@ -224,7 +234,11 @@ function PlaylistCopy(props) {
                     tempTotalList(resGet3);
                     if (resGet3.data.next == null){
                         //NEXT STEP!!
-                        addMix(playlistMix)
+                        if (playlistMix == "" || playlistMix == null) {
+                            addNoMix(playlistTo, cardId)
+                        }else{
+                            addMix(playlistMix, playlistTo, cardId)
+                        }
                         return
                     }
                     axios.get(resGet3.data.next, {
@@ -236,7 +250,11 @@ function PlaylistCopy(props) {
                         tempTotalList(resGet4);
                         if (resGet4.data.next == null){
                             //NEXT STEP!!
-                            addMix(playlistMix)
+                            if (playlistMix == "" || playlistMix == null) {
+                                addNoMix(playlistTo, cardId)
+                            }else{
+                                addMix(playlistMix, playlistTo, cardId)
+                            }
                             return
                         }
                         axios.get(resGet4.data.next, {
@@ -247,106 +265,164 @@ function PlaylistCopy(props) {
                             //Add 500
                             tempTotalList(resGet5);
                             //NEXT STEP!!
-                            addMix(playlistMix)
+                            if (playlistMix == "" || playlistMix == null) {
+                                addNoMix(playlistTo, cardId)
+                            }else{
+                                addMix(playlistMix, playlistTo, cardId)
+                            }
                             return
                         })
                     })
                 })
             })
         })
-        // console.log("Posting...");
-        // const token = props.token;
-        // axios.get(`https://api.spotify.com/v1/playlists/${playlistFrom}/tracks`, {
-        //     headers: {
-        //         Authorization: "Bearer " + token,
-        //     }
-        // }).then((resGet) => {
-        //     console.log("Post 100");
-        //     const newData = {uris: tracksArrayCopy(resGet)}
-        //     axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
-        //         headers: {
-        //             Authorization: "Bearer " + token,
-        //         }
-        //     }).then((resPost) => {
-        //         if (resGet.data.next == null) return 
-        //         axios.get(resGet.data.next, {
-        //             headers: {
-        //                 Authorization: "Bearer " + token,
-        //             }
-        //         }).then((resGet2) => {
-        //             console.log("Post 200");
-        //             const newData = {uris: tracksArrayCopy(resGet2)}
-        //             axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
-        //                 headers: {
-        //                     Authorization: "Bearer " + token,
-        //                 }
-        //             }).then((resPost2) => {
-        //                 if (resGet2.data.next == null) return
-        //                 axios.get(resGet2.data.next, {
-        //                     headers: {
-        //                         Authorization: "Bearer " + token,
-        //                     }
-        //                 }).then((resGet3) => {
-        //                     console.log("Post 300");
-        //                     const newData = {uris: tracksArrayCopy(resGet3)}
-        //                     axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
-        //                         headers: {
-        //                             Authorization: "Bearer " + token,
-        //                         }
-        //                     }).then((resPost3) => {
-        //                         if (resGet3.data.next == null) return
-        //                         axios.get(resGet3.data.next, {
-        //                             headers: {
-        //                                 Authorization: "Bearer " + token,
-        //                             }
-        //                         }).then((resGet4) => {
-        //                             console.log("Post 400");
-        //                             const newData = {uris: tracksArrayCopy(resGet4)}
-        //                             axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
-        //                                 headers: {
-        //                                     Authorization: "Bearer " + token,
-        //                                 }
-        //                             }).then((resPost4) => {
-        //                                 if (resGet4.data.next == null) return
-        //                                 axios.get(resGet4.data.next, {
-        //                                     headers: {
-        //                                         Authorization: "Bearer " + token,
-        //                                     }
-        //                                 }).then((resGet5) => {
-        //                                     console.log("Post 500");
-        //                                     const newData = {uris: tracksArrayCopy(resGet5)}
-        //                                     axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
-        //                                         headers: {
-        //                                             Authorization: "Bearer " + token,
-        //                                         }
-        //                                     })
-        //                                 })
-        //                             })
-        //                         })
-        //                     })
-        //                 })
-        //             })
-        //         })
-        //     })
-        // })
-        //COPY COMPLETE
         
     }
 
-    function addMix(playlistMix){
+    function addMix(playlistMix, playlistTo, cardId){
+
         const token = props.token;
+        let completeMixedList = []
 
         axios.get(`https://api.spotify.com/v1/playlists/${playlistMix}/tracks`, {
             headers: {
                 Authorization: "Bearer " + token,
             }
         }).then((resMix) => {
-            //Add 100
-            tempTotalList(resMix);
-            console.log(tempList)
+            //Gets the mixed list
+            let mixedOnly = getMixedList(resMix)
+
+            //Mix all tracks togheter
+            let mixed = mixInTracks(tempList, mixedOnly, 3)
+            //Add all to list both mixedOnly and current tempList
+            tempList = [...mixed]
+            console.log("Mixed LIST");
+
+            completeMixedList = get100List()
+            console.log("Posting 100");
+            const newData = {uris: completeMixedList}
+            axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
+            }).then((resPost) => {
+                if (tempList.length <= 0) return 
+                completeMixedList = []
+                completeMixedList = get100List()
+                console.log("Posting 200");
+                const newData = {uris: completeMixedList}
+                axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    }
+                }).then((resPost2) => {
+                    if (tempList.length <= 0) return 
+                    completeMixedList = []
+                    completeMixedList = get100List()
+                    console.log("Posting 300");
+                    
+                    const newData = {uris: completeMixedList}
+                    axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                        }
+                    }).then((resPost3) => {
+                        if (tempList.length <= 0) return 
+                        completeMixedList = []
+                        completeMixedList = get100List()
+                        console.log("Posting 400");
+                        
+                        const newData = {uris: completeMixedList}
+                        axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            }
+                        }).then((resPost4) => {
+                            if (tempList.length <= 0) return 
+                            completeMixedList = []
+                            completeMixedList = get100List()
+                            console.log("Posting 500");
+                            
+                            const newData = {uris: completeMixedList}
+                            axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                                headers: {
+                                    Authorization: "Bearer " + token,
+                                }
+                            })
+                        })
+                    })
+                })
+            })
         })
+        copyMessageComplete(cardId)
     }
 
+    function addNoMix(playlistTo, cardId){
+        const token = props.token;
+        let completeList = []
+        console.log("NO Mix");
+
+        completeList = get100List()
+        console.log("Posting 100");
+        const newData = {uris: completeList}
+        axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+            headers: {
+                Authorization: "Bearer " + token,
+            }
+        }).then((resPost) => {
+            if (tempList.length <= 0) return 
+            completeList = []
+            completeList = get100List()
+            console.log("Posting 200");
+            const newData = {uris: completeList}
+            axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                }
+            }).then((resPost2) => {
+                if (tempList.length <= 0) return 
+                completeList = []
+                completeList = get100List()
+                console.log("Posting 300");
+                
+                const newData = {uris: completeList}
+                axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    }
+                }).then((resPost3) => {
+                    if (tempList.length <= 0) return 
+                    completeList = []
+                    completeList = get100List()
+                    console.log("Posting 400");
+                    
+                    const newData = {uris: completeList}
+                    axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                        headers: {
+                            Authorization: "Bearer " + token,
+                        }
+                    }).then((resPost4) => {
+                        if (tempList.length <= 0) return 
+                        completeList = []
+                        completeList = get100List()
+                        console.log("Posting 500");
+                        
+                        const newData = {uris: completeList}
+                        axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            }
+                        })
+                    })
+                })
+            })
+        })
+        copyMessageComplete(cardId)
+    }
+
+    function copyMessageComplete(cardId){
+        setCopycomplete(cardId);
+    }
 
     function tracksArrayDelete(inputData){
         // console.log(inputData);
@@ -360,24 +436,59 @@ function PlaylistCopy(props) {
         return totalTracks
     }
 
-    function tracksArrayCopy(respondData){
-        
-        let totalTracks = []
-        totalTracks =  respondData.data.items.map( (item, i) => {
-            return item.track.uri
-        })
-        // console.log(totalTracks);
-        return totalTracks
-    }
-
-    function tempTotalList(respondData){
+    function tempTotalList(respondData){ //Adds URI items and saves to tempList
         console.log(respondData)
-
-        tempList.push(respondData.data.items.map( (item, i) => {
-            return item.track.uri
-        }))
+        respondData.data.items.map((item, i) => {
+            if (!item.track.is_local) {
+                return tempList.push(item.track.uri)
+            } 
+        })
 
         return tempList
+    }
+
+    function getMixedList(respondData){ //Only one call returns the mixed list
+        let mixedList = []
+        mixedList = respondData.data.items.map((item, i) => {
+            if (!item.track.is_local) {
+                return item.track.uri
+            }
+        })
+        return mixedList
+    }
+
+    function get100List(){
+        var partOflist = []
+        // console.log("Before splice tempList")
+        // console.log(tempList.length)
+        if (tempList.length >= 100) {
+            partOflist = tempList.splice(0, 100)
+            return partOflist
+        }else{
+            partOflist = tempList.slice();
+            tempList = [];
+            return partOflist
+        }
+    }
+
+    function mixInTracks(orgArray, mixArray, nrSongsBetween ){
+        let mixedTrackArray = [];
+
+        //Add one because to calculate correctely
+        nrSongsBetween=nrSongsBetween+1;
+    
+        let mixCounter = 0;
+        let orgCounter = 0;
+    
+        for (let index1 = 1; index1 <= orgArray.length + mixArray.length; index1++) {
+            if ((index1%nrSongsBetween==0 && mixCounter<mixArray.length) || orgCounter>=orgArray.length){
+                mixedTrackArray.push(mixArray[mixCounter++]);
+            } else{
+                mixedTrackArray.push(orgArray[orgCounter++]);
+            }
+        }
+        console.log("Mixing Complete")
+        return mixedTrackArray;
     }
 
 
@@ -411,7 +522,20 @@ function PlaylistCopy(props) {
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
         </div>
-        <PlaylistCopyCards copyButton={copyButton} data={props.data} copyComplete={copyComplete}/>
+        {/* <PlayListCopyCards copyButton={copyButton} data={props.data} copyComplete={copyComplete}/> */}
+        <div className={"listcopy-card-container"}>
+            {documents && documents.map((listItem,i) => {
+                return <div key={i}>
+                <PlayListCopyCard
+                    id={i+1} 
+                    copyButton={copyButton} 
+                    data={props.data} 
+                    listItem={listItem}
+                    copyComplete={copyComplete}
+                />
+                </div>
+            })}
+        </div>
     </div>
   )
 }

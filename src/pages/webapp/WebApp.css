@@ -32,6 +32,16 @@
     transition: all 0.2s;
   }
 
+  .btn-form-disabled{
+    background: var(--color-gray);
+    padding: 16px 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: var(--color-lightGray);
+    font-size: var(--fs-h5);
+    border: none;
+  }
+
   
   .btn-form:hover{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);

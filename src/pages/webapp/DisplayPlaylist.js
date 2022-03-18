@@ -58,7 +58,7 @@ const DisplayPlaylist = (props) => {
     function CalcDifference(savedDoc, itemName, newTrack, newFollowers, isTrack){
 
         if(savedDoc[0] != null){
-            
+          // console.log(`${savedDoc} ${itemName} ${newTrack} ${newFollowers}`)
             for (let i = 0; i < savedDoc[0].playlist.length; i++) {
                 // console.log(newDoc[0])
                 if (itemName == savedDoc[0].playlist[i].name) {
