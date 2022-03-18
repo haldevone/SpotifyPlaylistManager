@@ -15,6 +15,7 @@ var tempList = [];
 function PlaylistCopy(props) {
     const [fromCopy, setFromCopy] = useState({name: "", playlistId: ""});
     const [toCopy, setToCopy] = useState({name: "", playlistId: ""});
+    const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
     const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
@@ -26,11 +27,20 @@ function PlaylistCopy(props) {
     }
 
     function handleChangeTO(e){
-        
+
         setToCopy({name: e.target.value, playlistId: findID(e.target.value)});
     }
 
+    function handleChangeMixWith(e){
+
+        setMixWith({name: e.target.value, playlistId: findID(e.target.value)});
+    }
+
     function findID(name){
+        if (name == "...") {
+            //Error message must choose
+          return
+        }
         let foundPlaylist = props.data.data.items.filter(item => {
             return item.name == name;
         })
@@ -43,12 +53,13 @@ function PlaylistCopy(props) {
         if (fromCopy != undefined && toCopy != undefined) {
             addDocument({
                 uid: user.uid,
-                listCopy: {fromCopy, toCopy},
+                listCopy: {fromCopy, toCopy, mixWith},
                 createdAt
             });
         }
-        setToCopy("");
-        setFromCopy("");
+        // setToCopy("");
+        // setFromCopy("");
+        // setMixWith("");
     }
 
     function copyButton(playlistFrom, playlistTo, playlistMix, cardId){
@@ -94,7 +105,7 @@ function PlaylistCopy(props) {
                         if (res2.data.next == null){
                             copyTo(playlistFrom, playlistTo, playlistMix);
                             return
-                        } 
+                        }
                         axios.get(getURL, {
                             headers: {
                                 Authorization: "Bearer " + token,
@@ -113,7 +124,7 @@ function PlaylistCopy(props) {
                                 if (res3.data.next == null){
                                     copyTo(playlistFrom, playlistTo, playlistMix);
                                     return
-                                } 
+                                }
                                 axios.get(getURL, {
                                     headers: {
                                         Authorization: "Bearer " + token,
@@ -132,7 +143,7 @@ function PlaylistCopy(props) {
                                         if (res4.data.next == null){
                                             copyTo(playlistFrom, playlistTo, playlistMix);
                                             return
-                                        } 
+                                        }
                                         axios.get(getURL, {
                                             headers: {
                                                 Authorization: "Bearer " + token,
@@ -179,7 +190,7 @@ function PlaylistCopy(props) {
                     })
                 })
             })
-            
+
         }) .catch((error) => {
             console.log(error);
         })
@@ -276,7 +287,7 @@ function PlaylistCopy(props) {
                 })
             })
         })
-        
+
     }
 
     function addMix(playlistMix, playlistTo, cardId){
@@ -306,7 +317,7 @@ function PlaylistCopy(props) {
                     Authorization: "Bearer " + token,
                 }
             }).then((resPost) => {
-                if (tempList.length <= 0) return 
+                if (tempList.length <= 0) return
                 completeMixedList = []
                 completeMixedList = get100List()
                 console.log("Posting 200");
@@ -316,33 +327,33 @@ function PlaylistCopy(props) {
                         Authorization: "Bearer " + token,
                     }
                 }).then((resPost2) => {
-                    if (tempList.length <= 0) return 
+                    if (tempList.length <= 0) return
                     completeMixedList = []
                     completeMixedList = get100List()
                     console.log("Posting 300");
-                    
+
                     const newData = {uris: completeMixedList}
                     axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
                         headers: {
                             Authorization: "Bearer " + token,
                         }
                     }).then((resPost3) => {
-                        if (tempList.length <= 0) return 
+                        if (tempList.length <= 0) return
                         completeMixedList = []
                         completeMixedList = get100List()
                         console.log("Posting 400");
-                        
+
                         const newData = {uris: completeMixedList}
                         axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
                             headers: {
                                 Authorization: "Bearer " + token,
                             }
                         }).then((resPost4) => {
-                            if (tempList.length <= 0) return 
+                            if (tempList.length <= 0) return
                             completeMixedList = []
                             completeMixedList = get100List()
                             console.log("Posting 500");
-                            
+
                             const newData = {uris: completeMixedList}
                             axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
                                 headers: {
@@ -370,7 +381,7 @@ function PlaylistCopy(props) {
                 Authorization: "Bearer " + token,
             }
         }).then((resPost) => {
-            if (tempList.length <= 0) return 
+            if (tempList.length <= 0) return
             completeList = []
             completeList = get100List()
             console.log("Posting 200");
@@ -380,33 +391,33 @@ function PlaylistCopy(props) {
                     Authorization: "Bearer " + token,
                 }
             }).then((resPost2) => {
-                if (tempList.length <= 0) return 
+                if (tempList.length <= 0) return
                 completeList = []
                 completeList = get100List()
                 console.log("Posting 300");
-                
+
                 const newData = {uris: completeList}
                 axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
                     headers: {
                         Authorization: "Bearer " + token,
                     }
                 }).then((resPost3) => {
-                    if (tempList.length <= 0) return 
+                    if (tempList.length <= 0) return
                     completeList = []
                     completeList = get100List()
                     console.log("Posting 400");
-                    
+
                     const newData = {uris: completeList}
                     axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
                         headers: {
                             Authorization: "Bearer " + token,
                         }
                     }).then((resPost4) => {
-                        if (tempList.length <= 0) return 
+                        if (tempList.length <= 0) return
                         completeList = []
                         completeList = get100List()
                         console.log("Posting 500");
-                        
+
                         const newData = {uris: completeList}
                         axios.post(`https://api.spotify.com/v1/playlists/${playlistTo}/tracks`, newData, {
                             headers: {
@@ -441,7 +452,7 @@ function PlaylistCopy(props) {
         respondData.data.items.map((item, i) => {
             if (!item.track.is_local) {
                 return tempList.push(item.track.uri)
-            } 
+            }
         })
 
         return tempList
@@ -476,10 +487,10 @@ function PlaylistCopy(props) {
 
         //Add one because to calculate correctely
         nrSongsBetween=nrSongsBetween+1;
-    
+
         let mixCounter = 0;
         let orgCounter = 0;
-    
+
         for (let index1 = 1; index1 <= orgArray.length + mixArray.length; index1++) {
             if ((index1%nrSongsBetween==0 && mixCounter<mixArray.length) || orgCounter>=orgArray.length){
                 mixedTrackArray.push(mixArray[mixCounter++]);
@@ -518,6 +529,17 @@ function PlaylistCopy(props) {
                     })}
                 </select>
             </div>
+            <div className='listcopy-item'>
+                <label>Select Mix With: </label>
+                <select className='listcopy-options' onChange={(e) => handleChangeMixWith(e)} value={mixWith.name}>
+                <option className='listcopy-options listcopy-options-select' >{"..."}</option>
+                    {props.data.data.items.map((data, i) => {
+                        return (
+                            <option key={i} className='listcopy-options'>{data.name}</option>
+                        )
+                    })}
+                </select>
+            </div>
             <div className='listcopy-item-btn'>
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
@@ -527,9 +549,9 @@ function PlaylistCopy(props) {
             {documents && documents.map((listItem,i) => {
                 return <div key={i}>
                 <PlayListCopyCard
-                    id={i+1} 
-                    copyButton={copyButton} 
-                    data={props.data} 
+                    id={i+1}
+                    copyButton={copyButton}
+                    data={props.data}
                     listItem={listItem}
                     copyComplete={copyComplete}
                 />

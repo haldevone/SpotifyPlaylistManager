@@ -94,8 +94,8 @@ function HandlePlaylist() {
                 <div>
                     <button className='btn-big playlist-btn' onClick={handleSaveToFirebase}>Save To Database</button>
                     <button className='btn-big playlist-btn' onClick={() => setSwitchListbase(true)}>Compare Database</button>
-                    <button className='btn-big playlist-btn' onClick={() => setSwitchListCopy(true)}>Copy Playlists</button>
                 </div>}
+                <button className='btn-big playlist-btn' onClick={() => setSwitchListCopy(true)}>Copy Playlists</button>
             </div>
             {switchListCopy ? <PlaylistCopy data={data} token={token}/> : (switchListbase ? <ListBase dataComplete={dataComplete}/> : 
            (data && <DisplayPlaylist 

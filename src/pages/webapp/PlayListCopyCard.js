@@ -7,7 +7,7 @@ import "./PlaylistCopy.css"
 
 function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
     const { deleteDocument } = useFirestore('listcopy');
-    const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
+    // const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
     const [copyMessage, setCopyMessage] = useState(false);
 
     const cardId = useRef();
@@ -19,20 +19,20 @@ function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
     }, [copyComplete])
     
 
-    function handleChangeMix(e){
-        console.log(e.target.value);
-        setMixWith({name: e.target.value, playlistId: findID(e.target.value)});
-    }
+    // function handleChangeMix(e){
+    //     console.log(e.target.value);
+    //     setMixWith({name: e.target.value, playlistId: findID(e.target.value)});
+    // }
 
-    function findID(name){
-        if (name == "...") {
-          return
-        }
-        let foundPlaylist = data.data.items.filter(item => {
-            return item.name == name;
-        })
-        return foundPlaylist[0].id;
-    }
+    // function findID(name){
+    //     if (name == "...") {
+    //       return
+    //     }
+    //     let foundPlaylist = data.data.items.filter(item => {
+    //         return item.name == name;
+    //     })
+    //     return foundPlaylist[0].id;
+    // }
 
     return <div className={"listcopy-card"}>
     <div style={{position:"relative"}}>
@@ -53,6 +53,8 @@ function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
          </div>
          <div className='listcopy-card-fromTo-div'>
            <p>Mix With: </p>
+           <p className='listcopy-card-fromTo'>{listItem.listCopy.mixWith.name}</p>
+           {/* <p>Mix With: </p>
            <select className='listcopy-options' value={mixWith.name} onChange={(e) => handleChangeMix(e)} >
            <option className='listcopy-options listcopy-options-select'>{"..."}</option>
            {data.data.items.map((data, i) => {
@@ -60,10 +62,10 @@ function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
                    <option key={i} className='listcopy-options'>{data.name}</option>
                )
            })}
-           </select>
+           </select> */}
          </div>
          <button className={copyMessage ? "btn-form-disabled" : "btn-form"} 
-         onClick={() => copyButton(listItem.listCopy.fromCopy.playlistId, listItem.listCopy.toCopy.playlistId, mixWith.playlistId, cardId.current)}
+         onClick={() => copyButton(listItem.listCopy.fromCopy.playlistId, listItem.listCopy.toCopy.playlistId, listItem.listCopy.mixWith.playlistId, cardId.current)}
          disabled={copyMessage}>Copy</button>
        </div>
      </div>
