@@ -136,3 +136,9 @@
       border-radius: 4px;
       width: 17rem;
   }
+
+  .listcopy-error{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }

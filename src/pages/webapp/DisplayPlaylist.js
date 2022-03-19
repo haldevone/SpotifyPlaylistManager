@@ -16,7 +16,7 @@ const DisplayPlaylist = (props) => {
     const [dataComplete, setDataComplete] = useState(null);
     const [showlist, setShowList] = useState(false);
     const { user } = useAuthContext();
-    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid])
+    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid], "desc")
 
 
     

@@ -5,15 +5,15 @@ import './PlayListCard.css'
 import "./PlaylistCopy.css"
 
 
-function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
+function PlayListCopyCard({indexPlace, id, copyButton, data, listItem, copyComplete}) {
     const { deleteDocument } = useFirestore('listcopy');
     // const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
     const [copyMessage, setCopyMessage] = useState(false);
 
-    const cardId = useRef();
+    // const cardId = useRef();
     useEffect(() => {
-      cardId.current = id
-      if (copyComplete == cardId.current) {
+      // cardId.current = id
+      if (copyComplete == id) {
         setCopyMessage(true);
       }
     }, [copyComplete])
@@ -39,7 +39,7 @@ function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
          <button className='btn-copy' onClick={() => deleteDocument(listItem.id)}>x</button>
     </div>
     <div className='listcopy-card-head-info'>
-      <p className='listcopy-card-nr'>{id}</p>
+      <p className='listcopy-card-nr'>{indexPlace +1}</p>
       <div className='listcopy-card-message'>{copyMessage && <Message note={"Copy Complete"}/>}</div>
     </div>
        <div className='listcopy-card-inner'>
@@ -65,7 +65,7 @@ function PlayListCopyCard({id, copyButton, data, listItem, copyComplete}) {
            </select> */}
          </div>
          <button className={copyMessage ? "btn-form-disabled" : "btn-form"} 
-         onClick={() => copyButton(listItem.listCopy.fromCopy.playlistId, listItem.listCopy.toCopy.playlistId, listItem.listCopy.mixWith.playlistId, cardId.current)}
+         onClick={() => copyButton(listItem.listCopy.fromCopy.playlistId, listItem.listCopy.toCopy.playlistId, listItem.listCopy.mixWith.playlistId, id)}
          disabled={copyMessage}>Copy</button>
        </div>
      </div>

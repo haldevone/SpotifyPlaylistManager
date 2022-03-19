@@ -8,6 +8,7 @@ import './PlayListCard.css'
 import "./PlaylistCopy.css"
 import axios from 'axios';
 import PlayListCopyCard from './PlayListCopyCard';
+import Message from './Message';
 
 var tempList = [];
 
@@ -18,8 +19,9 @@ function PlaylistCopy(props) {
     const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
-    const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid]);
+    const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid], "");
     const [copyComplete, setCopycomplete] = useState(-1);
+    const [messageError, setMessageError] = useState({on: false, message: ""});
 
     function handleChangeFROM(e){
         console.log(e.target.value);
@@ -37,8 +39,7 @@ function PlaylistCopy(props) {
     }
 
     function findID(name){
-        if (name == "...") {
-            //Error message must choose
+        if (name == "..." || name == "Select From..."|| name == "Select To...") {
           return
         }
         let foundPlaylist = props.data.data.items.filter(item => {
@@ -48,13 +49,22 @@ function PlaylistCopy(props) {
     }
 
     function saveToDataBase(){
+        if (fromCopy.name == "" || toCopy.name == ""|| mixWith.name == "") {
+            console.log("error msg")
+            setMessageError({on: true, message: "All Fields Must Be Set!"})
+          return
+        }
+        if (messageError.on) {
+            setMessageError({on: false, message: ""})
+        }
         const createdAt = Timestamp.fromDate(new Date()).toDate();
 
         if (fromCopy != undefined && toCopy != undefined) {
             addDocument({
                 uid: user.uid,
                 listCopy: {fromCopy, toCopy, mixWith},
-                createdAt
+                createdAt,
+                id: Math.floor(Math.random() * 100000000) + 1
             });
         }
         // setToCopy("");
@@ -92,6 +102,7 @@ function PlaylistCopy(props) {
                     Authorization: "Bearer " + token,
                 }
                 }).then((res2) => {
+                    console.log(res2);
                     //Delete 100-200
                     console.log("Deleting 200")
                     axios.delete(getURL, {
@@ -111,6 +122,7 @@ function PlaylistCopy(props) {
                                 Authorization: "Bearer " + token,
                             }
                         }).then((res3) => {
+                            console.log(res3);
                             //Delete 200-300
                             console.log("Deleting 300")
                             axios.delete(getURL, {
@@ -130,6 +142,7 @@ function PlaylistCopy(props) {
                                         Authorization: "Bearer " + token,
                                     }
                                 }).then((res4) => {
+                                    console.log(res4);
                                     //Delete 300-400
                                     console.log("Deleting 400")
                                     axios.delete(getURL, {
@@ -189,10 +202,13 @@ function PlaylistCopy(props) {
                         })
                     })
                 })
+            }).catch((error) => {
+                setMessageError({on: true, message: error.message})
             })
 
         }) .catch((error) => {
             console.log(error);
+            setMessageError({on: true, message: error.message})
         })
     }
     // function copyTo(playlistFrom, playlistTo, playlistMix){
@@ -448,7 +464,7 @@ function PlaylistCopy(props) {
     }
 
     function tempTotalList(respondData){ //Adds URI items and saves to tempList
-        console.log(respondData)
+        // console.log(respondData)
         respondData.data.items.map((item, i) => {
             if (!item.track.is_local) {
                 return tempList.push(item.track.uri)
@@ -506,6 +522,9 @@ function PlaylistCopy(props) {
   return (
     <div>
             {response.success && <p className='playlist-message'>Saved To Database!</p>}
+            <div className='listcopy-error'>
+                {messageError.on && <Message note={messageError.message}/>}
+            </div>
         <div className='listcopy'>
             <div className='listcopy-item'>
                 <label>Select Copy From: </label>
@@ -548,8 +567,10 @@ function PlaylistCopy(props) {
         <div className={"listcopy-card-container"}>
             {documents && documents.map((listItem,i) => {
                 return <div key={i}>
+                {/* {console.log(listItem)} */}
                 <PlayListCopyCard
-                    id={i+1}
+                    indexPlace={i}
+                    id={listItem.id}
                     copyButton={copyButton}
                     data={props.data}
                     listItem={listItem}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../firebase/config';
 import { useRef } from 'react';
 
-export const useCollection = (collectionName, createdAt, _q) => {
+export const useCollection = (collectionName, createdAt, _q, orderType) => {
 
     const[documents, setDocuments] = useState(null);
     const [error, setError] = useState(null);
@@ -11,9 +11,16 @@ export const useCollection = (collectionName, createdAt, _q) => {
 
     useEffect(() => {
         let refColl = collection(db, collectionName);
-        if (q) {
-            refColl = query(refColl, where(...q), orderBy(createdAt, "desc")); //You can add limit here
+        if(orderType == "desc"){
+            if (q) {
+                refColl = query(refColl, where(...q), orderBy(createdAt, orderType)); //You can add limit here
+            }
+        }else{
+            if (q) {
+                refColl = query(refColl, where(...q), orderBy(createdAt)); //You can add limit here
+            }
         }
+       
 
         const unsubscribe = onSnapshot(refColl, (snapshot) => {
             let results = [];

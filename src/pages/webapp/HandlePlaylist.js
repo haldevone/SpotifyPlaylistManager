@@ -23,7 +23,7 @@ function HandlePlaylist() {
     const [dataComplete, setDataComplete] = useState(null);
     const { user } = useAuthContext();
     const {addDocument, response} = useFirestore('playlists');
-    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid])
+    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid], "desc")
 
     useEffect(() => {
         if (localStorage.getItem("accessToken")) {

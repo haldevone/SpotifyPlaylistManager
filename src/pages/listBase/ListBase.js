@@ -11,7 +11,7 @@ import useFirestore from '../../hooks/useFirestore';
 
 function ListBase(props) {
     const { user } = useAuthContext();
-    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid])
+    const { documents, error } = useCollection('playlists', 'createdAt', ['uid', '==', user.uid], "desc")
     const { deleteDocument } = useFirestore('playlists');
 
     useEffect(() => {
