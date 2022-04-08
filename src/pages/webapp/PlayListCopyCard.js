@@ -64,8 +64,14 @@ function PlayListCopyCard({indexPlace, id, copyButton, data, listItem, copyCompl
            })}
            </select> */}
          </div>
+         <div className='listcopy-card-maxSongs-div'>
+           <p className='listcopy-card-maxSongs'>{`Max songs: ${listItem.listCopy.maxSongs}`}</p>
+         </div>
+         <div className='listcopy-card-nrSongsBetween-div'>
+           <p className='listcopy-card-nrSongsBetween'>{`Nr Songs Between: ${listItem.listCopy.nrSongsBetween}`}</p>
+         </div>
          <button className={copyMessage ? "btn-form-disabled" : "btn-form"} 
-         onClick={() => copyButton(listItem.listCopy.fromCopy.playlistId, listItem.listCopy.toCopy.playlistId, listItem.listCopy.mixWith.playlistId, id)}
+         onClick={() => copyButton(listItem.listCopy.fromCopy.playlistId, listItem.listCopy.toCopy.playlistId, listItem.listCopy.mixWith.playlistId, listItem.listCopy.maxSongs, listItem.listCopy.nrSongsBetween, id)}
          disabled={copyMessage}>Copy</button>
        </div>
      </div>

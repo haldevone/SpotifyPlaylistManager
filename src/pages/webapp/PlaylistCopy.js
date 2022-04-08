@@ -12,11 +12,15 @@ import Message from './Message';
 
 var tempList = [];
 
+const maxValues = [50,100,200,500];
+const nrSongsBetweenValues = [1,2,3,4,5,6,7,8,9,10];
 
 function PlaylistCopy(props) {
     const [fromCopy, setFromCopy] = useState({name: "", playlistId: ""});
     const [toCopy, setToCopy] = useState({name: "", playlistId: ""});
     const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
+    const [maxSongs, setMaxSongs] = useState(0);
+    const [nrSongsBetween, setNrSongsBetween] = useState(0);
     const {addDocument, response} = useFirestore('listcopy');
     const { user } = useAuthContext();
     const { documents, error } = useCollection('listcopy', 'createdAt', ['uid', '==', user.uid], "");
@@ -29,12 +33,18 @@ function PlaylistCopy(props) {
     }
 
     function handleChangeTO(e){
-
         setToCopy({name: e.target.value, playlistId: findID(e.target.value)});
     }
 
-    function handleChangeMixWith(e){
+    function handleChangeMAXSONGS(e){
+        setMaxSongs(e.target.value);
+    }
 
+    function handleChangeNrSongsBetween(e){
+        setNrSongsBetween(e.target.value);
+    }
+    
+    function handleChangeMixWith(e){
         setMixWith({name: e.target.value, playlistId: findID(e.target.value)});
     }
 
@@ -62,7 +72,7 @@ function PlaylistCopy(props) {
         if (fromCopy != undefined && toCopy != undefined) {
             addDocument({
                 uid: user.uid,
-                listCopy: {fromCopy, toCopy, mixWith},
+                listCopy: {fromCopy, toCopy, mixWith, maxSongs, nrSongsBetween},
                 createdAt,
                 id: Math.floor(Math.random() * 100000000) + 1
             });
@@ -72,7 +82,7 @@ function PlaylistCopy(props) {
         // setMixWith("");
     }
 
-    function copyButton(playlistFrom, playlistTo, playlistMix, cardId){
+    function copyButton(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId){
         console.log("Deleting...")
         const token = props.token;
         const getURL = `https://api.spotify.com/v1/playlists/${playlistTo}/tracks`;
@@ -94,7 +104,7 @@ function PlaylistCopy(props) {
                 }
             }).then((resDel) => {
                 if(res.data.next == null){
-                    copyTo(playlistFrom, playlistTo, playlistMix, cardId);
+                    copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId);
                     return
                 }
                 axios.get(getURL, {
@@ -114,7 +124,7 @@ function PlaylistCopy(props) {
                         }
                     }).then((resDel2) => {
                         if (res2.data.next == null){
-                            copyTo(playlistFrom, playlistTo, playlistMix);
+                            copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId);
                             return
                         }
                         axios.get(getURL, {
@@ -134,7 +144,7 @@ function PlaylistCopy(props) {
                                 }
                             }).then((resDel3) => {
                                 if (res3.data.next == null){
-                                    copyTo(playlistFrom, playlistTo, playlistMix);
+                                    copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId);
                                     return
                                 }
                                 axios.get(getURL, {
@@ -154,7 +164,7 @@ function PlaylistCopy(props) {
                                         }
                                     }).then((resDel4) => {
                                         if (res4.data.next == null){
-                                            copyTo(playlistFrom, playlistTo, playlistMix);
+                                            copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId);
                                             return
                                         }
                                         axios.get(getURL, {
@@ -173,7 +183,7 @@ function PlaylistCopy(props) {
                                                 }
                                             }).then((resDel5) => {
                                                 if (res5.data.next == null){
-                                                    copyTo(playlistFrom, playlistTo, playlistMix);
+                                                    copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId);
                                                     return
                                                 }
                                                 axios.get(getURL, {
@@ -191,7 +201,7 @@ function PlaylistCopy(props) {
                                                             tracks: tracksArrayDelete(res6)
                                                         }
                                                     }).then((resDel6) =>{
-                                                        copyTo(playlistFrom, playlistTo, playlistMix);
+                                                        copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId);
                                                     })
                                                 })
                                             })
@@ -215,7 +225,7 @@ function PlaylistCopy(props) {
 
     // }
 
-    function copyTo(playlistFrom, playlistTo, playlistMix, cardId){
+    function copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId){
         //COPY STARTS HERE
         const token = props.token;
         tempList = [] //Reset templist
@@ -232,7 +242,7 @@ function PlaylistCopy(props) {
                 if (playlistMix == "" || playlistMix == null) {
                     addNoMix(playlistTo, cardId)
                 }else{
-                    addMix(playlistMix, playlistTo, cardId)
+                    addMix(playlistMix, playlistTo, maxSongs, nrSongsBetween, cardId)
                 }
                 return
             }
@@ -248,7 +258,7 @@ function PlaylistCopy(props) {
                     if (playlistMix == "" || playlistMix == null) {
                         addNoMix(playlistTo, cardId)
                     }else{
-                        addMix(playlistMix, playlistTo, cardId)
+                        addMix(playlistMix, playlistTo, maxSongs, nrSongsBetween, cardId)
                     }
                     return
                 }
@@ -264,7 +274,7 @@ function PlaylistCopy(props) {
                         if (playlistMix == "" || playlistMix == null) {
                             addNoMix(playlistTo, cardId)
                         }else{
-                            addMix(playlistMix, playlistTo, cardId)
+                            addMix(playlistMix, playlistTo, maxSongs, nrSongsBetween, cardId)
                         }
                         return
                     }
@@ -280,7 +290,7 @@ function PlaylistCopy(props) {
                             if (playlistMix == "" || playlistMix == null) {
                                 addNoMix(playlistTo, cardId)
                             }else{
-                                addMix(playlistMix, playlistTo, cardId)
+                                addMix(playlistMix, playlistTo, maxSongs, nrSongsBetween, cardId)
                             }
                             return
                         }
@@ -295,7 +305,7 @@ function PlaylistCopy(props) {
                             if (playlistMix == "" || playlistMix == null) {
                                 addNoMix(playlistTo, cardId)
                             }else{
-                                addMix(playlistMix, playlistTo, cardId)
+                                addMix(playlistMix, playlistTo, maxSongs, nrSongsBetween, cardId)
                             }
                             return
                         })
@@ -306,7 +316,7 @@ function PlaylistCopy(props) {
 
     }
 
-    function addMix(playlistMix, playlistTo, cardId){
+    function addMix(playlistMix, playlistTo, maxSongs, nrSongsBetween, cardId){
 
         const token = props.token;
         let completeMixedList = []
@@ -320,7 +330,7 @@ function PlaylistCopy(props) {
             let mixedOnly = getMixedList(resMix)
 
             //Mix all tracks togheter
-            let mixed = mixInTracks(tempList, mixedOnly, 3)
+            let mixed = mixInTracks(tempList, mixedOnly, maxSongs, nrSongsBetween)
             //Add all to list both mixedOnly and current tempList
             tempList = [...mixed]
             console.log("Mixed LIST");
@@ -498,16 +508,19 @@ function PlaylistCopy(props) {
         }
     }
 
-    function mixInTracks(orgArray, mixArray, nrSongsBetween ){
+    function mixInTracks(orgArray, mixArray, maxSongs, nrSongsBetween){
+        console.log("mixInTracks nrSongsBetween: " + nrSongsBetween);
+        console.log("mixInTracks maxSongs: " + maxSongs);
+
         let mixedTrackArray = [];
 
         //Add one because to calculate correctely
-        nrSongsBetween=nrSongsBetween+1;
+        nrSongsBetween=parseInt(nrSongsBetween)+1;
 
         let mixCounter = 0;
         let orgCounter = 0;
 
-        for (let index1 = 1; index1 <= orgArray.length + mixArray.length; index1++) {
+        for (let index1 = 1; index1 <= orgArray.length + mixArray.length && index1 <=maxSongs; index1++) {
             if ((index1%nrSongsBetween==0 && mixCounter<mixArray.length) || orgCounter>=orgArray.length){
                 mixedTrackArray.push(mixArray[mixCounter++]);
             } else{
@@ -555,6 +568,28 @@ function PlaylistCopy(props) {
                     {props.data.data.items.map((data, i) => {
                         return (
                             <option key={i} className='listcopy-options'>{data.name}</option>
+                        )
+                    })}
+                </select>
+            </div>
+            <div className='listcopy-item'>
+                <label>Max Songs: </label>
+                <select className='listcopy-options' onChange={(e) => handleChangeMAXSONGS(e)} value={maxSongs}>
+                <option className='listcopy-options listcopy-options-select' >{"..."}</option>
+                    {maxValues.map((data, i) => {
+                        return (
+                            <option key={i} className='listcopy-options'>{data}</option>
+                        )
+                    })}
+                </select>
+            </div>
+            <div className='listcopy-item'>
+                <label>Nr Songs Between: </label>
+                <select className='listcopy-options' onChange={(e) => handleChangeNrSongsBetween(e)} value={nrSongsBetween}>
+                <option className='listcopy-options listcopy-options-select' >{"..."}</option>
+                    {nrSongsBetweenValues.map((data, i) => {
+                        return (
+                            <option key={i} className='listcopy-options'>{data}</option>
                         )
                     })}
                 </select>
