@@ -13,11 +13,11 @@ export const useCollection = (collectionName, createdAt, _q, orderType) => {
         let refColl = collection(db, collectionName);
         if(orderType == "desc"){
             if (q) {
-                refColl = query(refColl, where(...q), orderBy(createdAt, orderType)); //You can add limit here
+                refColl = query(refColl, where(...q), orderBy(createdAt, orderType));
             }
         }else{
             if (q) {
-                refColl = query(refColl, where(...q), orderBy(createdAt)); //You can add limit here
+                refColl = query(refColl, where(...q), orderBy(createdAt));
             }
         }
        

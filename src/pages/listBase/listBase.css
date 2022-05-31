@@ -13,9 +13,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
 }
-/* .listbase-item{
-    margin: 0 1rem;
-} */
+
 .listbase-item p{
     padding-bottom: 0.3rem;
 }

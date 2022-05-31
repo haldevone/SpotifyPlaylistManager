@@ -46,7 +46,6 @@
   .btn-form:hover{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
     transform: translateY(-1px);
-    /* background-color: var(--color-lightHover); */
     cursor: pointer;
   }
   .btn-form:active{

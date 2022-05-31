@@ -52,15 +52,12 @@ const DisplayPlaylist = (props) => {
             })
         })
         setDataComplete(tempFollowers);
-        // setLoaded(true);
     }
 
     function CalcDifference(savedDoc, itemName, newTrack, newFollowers, isTrack){
 
         if(savedDoc[0] != null){
-          // console.log(`${savedDoc} ${itemName} ${newTrack} ${newFollowers}`)
             for (let i = 0; i < savedDoc[0].playlist.length; i++) {
-                // console.log(newDoc[0])
                 if (itemName == savedDoc[0].playlist[i].name) {
                     if (isTrack) {
                       const newVal = parseInt(newTrack)
@@ -131,7 +128,6 @@ const DisplayPlaylist = (props) => {
                 <h3 className='playlist-header-track'>Tracks</h3>
                 <h3 className='playlist-header-followers'>Followers</h3>
             </div>}
-            {/* {console.log(documents && documents[0])} */}
             {showlist && dataComplete.map((item, i) => 
                         <PlayListCard key={item.id} background={i % 2 === 0 && "Snow"}>
                             {<img src={item.images[0] && item.images[0].url} alt="" />}
@@ -160,7 +156,6 @@ const DisplayPlaylist = (props) => {
                         </PlayListCard>
                     )}
   </>
-// 
 }
 
 

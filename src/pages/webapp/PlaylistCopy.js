@@ -77,9 +77,6 @@ function PlaylistCopy(props) {
                 id: Math.floor(Math.random() * 100000000) + 1
             });
         }
-        // setToCopy("");
-        // setFromCopy("");
-        // setMixWith("");
     }
 
     function copyButton(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId){
@@ -221,9 +218,6 @@ function PlaylistCopy(props) {
             setMessageError({on: true, message: error.message})
         })
     }
-    // function copyTo(playlistFrom, playlistTo, playlistMix){
-
-    // }
 
     function copyTo(playlistFrom, playlistTo, playlistMix, maxSongs, nrSongsBetween, cardId){
         //COPY STARTS HERE
@@ -462,14 +456,13 @@ function PlaylistCopy(props) {
     }
 
     function tracksArrayDelete(inputData){
-        // console.log(inputData);
         let totI = 0;
         let totalTracks = [{uri:""}]
         totalTracks =  inputData.data.items.map( (item, i) => {
             totI = i;
             return {uri : item.track.uri}
         })
-        // console.log(totI);
+
         return totalTracks
     }
 
@@ -496,8 +489,6 @@ function PlaylistCopy(props) {
 
     function get100List(){
         var partOflist = []
-        // console.log("Before splice tempList")
-        // console.log(tempList.length)
         if (tempList.length >= 100) {
             partOflist = tempList.splice(0, 100)
             return partOflist
@@ -598,11 +589,9 @@ function PlaylistCopy(props) {
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
         </div>
-        {/* <PlayListCopyCards copyButton={copyButton} data={props.data} copyComplete={copyComplete}/> */}
         <div className={"listcopy-card-container"}>
             {documents && documents.map((listItem,i) => {
                 return <div key={i}>
-                {/* {console.log(listItem)} */}
                 <PlayListCopyCard
                     indexPlace={i}
                     id={listItem.id}

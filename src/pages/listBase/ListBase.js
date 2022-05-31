@@ -116,8 +116,6 @@ function ListBase(props) {
                   <h4>Date: {items.createdAt.toDate().toLocaleDateString('en')}</h4>
                 </div>
                 <button className='listbase-btn' onClick={() => deleteDocument(items.id)}>x</button>
-                {/* {console.log(props.dataComplete)}
-                {console.log(documents)} */}
               </div>
               <ul className='listbase-list'>
               {items.playlist.map(item => (

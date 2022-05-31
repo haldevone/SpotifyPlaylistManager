@@ -7,32 +7,14 @@ import "./PlaylistCopy.css"
 
 function PlayListCopyCard({indexPlace, id, copyButton, data, listItem, copyComplete}) {
     const { deleteDocument } = useFirestore('listcopy');
-    // const [mixWith, setMixWith] = useState({name: "", playlistId: ""});
     const [copyMessage, setCopyMessage] = useState(false);
 
-    // const cardId = useRef();
     useEffect(() => {
-      // cardId.current = id
       if (copyComplete == id) {
         setCopyMessage(true);
       }
     }, [copyComplete])
     
-
-    // function handleChangeMix(e){
-    //     console.log(e.target.value);
-    //     setMixWith({name: e.target.value, playlistId: findID(e.target.value)});
-    // }
-
-    // function findID(name){
-    //     if (name == "...") {
-    //       return
-    //     }
-    //     let foundPlaylist = data.data.items.filter(item => {
-    //         return item.name == name;
-    //     })
-    //     return foundPlaylist[0].id;
-    // }
 
     return <div className={"listcopy-card"}>
     <div style={{position:"relative"}}>
@@ -54,15 +36,6 @@ function PlayListCopyCard({indexPlace, id, copyButton, data, listItem, copyCompl
          <div className='listcopy-card-fromTo-div'>
            <p>Mix With: </p>
            <p className='listcopy-card-fromTo'>{listItem.listCopy.mixWith.name}</p>
-           {/* <p>Mix With: </p>
-           <select className='listcopy-options' value={mixWith.name} onChange={(e) => handleChangeMix(e)} >
-           <option className='listcopy-options listcopy-options-select'>{"..."}</option>
-           {data.data.items.map((data, i) => {
-               return (
-                   <option key={i} className='listcopy-options'>{data.name}</option>
-               )
-           })}
-           </select> */}
          </div>
          <div className='listcopy-card-maxSongs-div'>
            <p className='listcopy-card-maxSongs'>{`Max songs: ${listItem.listCopy.maxSongs}`}</p>
