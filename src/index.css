@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300&family=Quicksand:wght@300;400;500;600;700&family=Sora:wght@200;300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 :root{
   --fs-h1: 3rem;
   --fs-h2: 2.2rem;
@@ -9,10 +9,11 @@
   --fs-p: 1rem;
   --fs-small: 0.9rem;
 
-  --color-primary: rgb(238, 238, 238);
+  --color-primary: rgb(255, 255, 255);
   --color-secondary: #232323;
   --color-lightGray: #404040;
   --color-green: #06D061;
+  --color-letter: #e2e2e2;
   --color-lightgreen: #13e973;
   --color-gray: #444444;
 
@@ -28,7 +29,7 @@
 }
 
 body {
-  font-family: Sora, sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-secondary);
@@ -77,3 +78,31 @@ ul{
   margin: 0 auto;
 }
 
+.home{
+position: relative;
+}
+
+.btn-spotify{
+  position: absolute;
+  left: 6rem;
+  z-index: 100;
+  top: 2rem;
+  padding: 0.5rem;
+  background-color: transparent;
+  border: none;
+  color: var(--color-letter);
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.1s ease-in;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-spotify:hover{
+  font-weight: 700;
+}

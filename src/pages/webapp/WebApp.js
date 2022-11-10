@@ -2,6 +2,8 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import HandlePlaylist from './HandlePlaylist';
 import './WebApp.css'
+import { faSpotify } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CLIENT_ID = process.env.REACT_APP_CLIENTID;
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -56,11 +58,11 @@ function WebApp() {
     }
 
     return (
-        <div className='container'>
-            <div className='webapp-btns'>
+        <div className='home'>
+            <div className=''>
                 {!token ? 
-                    <button className='btn-big' onClick={handleLogin}>Spotify Login</button> :
-                    <button className='btn-big' onClick={handleLogout}>Spotify Logout</button>
+                    <button className='btn-spotify' onClick={handleLogin}><span className='list-icons'><FontAwesomeIcon icon={faSpotify} /></span><p>Spotify Login</p></button> :
+                    <button className='btn-spotify' onClick={handleLogout}><span className='list-icons'><FontAwesomeIcon icon={faSpotify} /></span><p>Spotify Logout</p></button>
                 }
             </div>
             <div>

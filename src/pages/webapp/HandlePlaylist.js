@@ -10,6 +10,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useCollection } from '../../hooks/useCollection';
 import PlaylistCopy from './PlaylistCopy';
+import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons';
+import { faRectangleList } from '@fortawesome/free-regular-svg-icons';
+import { faServer } from '@fortawesome/free-solid-svg-icons';
+import { faPaste } from '@fortawesome/free-regular-svg-icons';
+
 
 const PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists/";
 
@@ -86,15 +91,15 @@ function HandlePlaylist() {
         {response.success && <p className='playlist-message'>Saved To Database!</p>}
             <div className='playlist-buttons'>
                 <div className='playlist-buttons-container'>
-                {(!switchListbase && !switchListCopy) ? <button className='btn-big playlist-btn' onClick={() => handleChildShow()}>Get Playlist</button> :
-                <button className='btn-big playlist-btn' onClick={() => window.location.reload(false)}>
+                {(!switchListbase && !switchListCopy) ? <button className='btn-sidebar' onClick={() => handleChildShow()}><span className='list-icons'><FontAwesomeIcon icon={faRectangleList} /></span><p>Get Playlist</p></button> :
+                <button className='btn-sidebar' onClick={() => window.location.reload(false)}>
                     <FontAwesomeIcon icon={faArrowLeft} /> Back</button>}
                 {(dataComplete && !switchListbase && !switchListCopy) &&
-                <div>
-                    <button className='btn-big playlist-btn' onClick={handleSaveToFirebase}>Save To Database</button>
-                    <button className='btn-big playlist-btn' onClick={() => setSwitchListbase(true)}>Compare Database</button>
-                </div>}
-                <button className='btn-big playlist-btn' onClick={() => setSwitchListCopy(true)}>Copy Playlists</button>
+                <>
+                    <button className='btn-sidebar' onClick={handleSaveToFirebase}><span className='list-icons'><FontAwesomeIcon icon={faFloppyDisk} /></span><p>Save To Database</p></button>
+                    <button className='btn-sidebar' onClick={() => setSwitchListbase(true)}><span className='list-icons'><FontAwesomeIcon icon={faServer} /></span><p>Compare Database</p></button>
+                </>}
+                <button className='btn-sidebar' onClick={() => setSwitchListCopy(true)}><span className='list-icons'><FontAwesomeIcon icon={faPaste} /></span><p>Copy Playlist</p></button>
                 </div>
             </div>
             {switchListCopy ? <PlaylistCopy data={data} token={token}/> : (switchListbase ? <ListBase dataComplete={dataComplete}/> : 
