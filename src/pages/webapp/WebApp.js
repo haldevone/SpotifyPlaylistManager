@@ -9,6 +9,8 @@ const REDIRECT_URI_AFTER_LOGIN = "https://spotifyplaylistmanager.netlify.app";
 // "https://spotifyplaylistmanager.netlify.app"
 //http://localhost:3000/
 
+//https://developer.spotify.com/dashboard/applications
+
 const SCOPES = ["playlist-read-private user-follow-read user-library-modify playlist-read-collaborative playlist-modify-private playlist-modify-public"];
 const SCOPES_URL_PARAM = SCOPES.join("%20");
 
@@ -54,7 +56,7 @@ function WebApp() {
     }
 
     return (
-        <>
+        <div className='container'>
             <div className='webapp-btns'>
                 {!token ? 
                     <button className='btn-big' onClick={handleLogin}>Spotify Login</button> :
@@ -67,7 +69,7 @@ function WebApp() {
             }
                 
             </div>
-        </>
+        </div>
         
     )
 }

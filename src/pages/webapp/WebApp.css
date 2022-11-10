@@ -64,7 +64,7 @@
   }
 /* GETPLAYLIST */
   .playlist-container{
-  margin-top: 10rem;
+    position: relative;
   }
 
   /* MESSAGE */

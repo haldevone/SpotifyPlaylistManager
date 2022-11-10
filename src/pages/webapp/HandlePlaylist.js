@@ -85,6 +85,7 @@ function HandlePlaylist() {
         <div className='playlist-container'>
         {response.success && <p className='playlist-message'>Saved To Database!</p>}
             <div className='playlist-buttons'>
+                <div className='playlist-buttons-container'>
                 {(!switchListbase && !switchListCopy) ? <button className='btn-big playlist-btn' onClick={() => handleChildShow()}>Get Playlist</button> :
                 <button className='btn-big playlist-btn' onClick={() => window.location.reload(false)}>
                     <FontAwesomeIcon icon={faArrowLeft} /> Back</button>}
@@ -94,6 +95,7 @@ function HandlePlaylist() {
                     <button className='btn-big playlist-btn' onClick={() => setSwitchListbase(true)}>Compare Database</button>
                 </div>}
                 <button className='btn-big playlist-btn' onClick={() => setSwitchListCopy(true)}>Copy Playlists</button>
+                </div>
             </div>
             {switchListCopy ? <PlaylistCopy data={data} token={token}/> : (switchListbase ? <ListBase dataComplete={dataComplete}/> : 
            (data && <DisplayPlaylist 

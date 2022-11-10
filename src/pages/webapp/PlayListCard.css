@@ -79,9 +79,18 @@
 }
 
 .playlist-buttons{
-    display: flex;
+    background-color: var(--color-lightGray);
+    /* display: flex;
     margin: 20px;
-    justify-content: center;
+    justify-content: center; */
+    position: absolute;
+    left: -8rem;
+    width: 28rem;
+    height: 100vh;
+}
+.playlist-buttons-container{
+    width: 20rem;
+
 }
 .playlist-btn{
     position: relative;

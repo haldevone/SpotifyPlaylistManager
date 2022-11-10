@@ -7,12 +7,13 @@
   --fs-h5: 1.2rem;
   --fs-h6: 1.1rem;
   --fs-p: 1rem;
+  --fs-small: 0.9rem;
 
   --color-primary: rgb(238, 238, 238);
-  --color-secondary: rgb(63, 59, 59);
-  --color-lightGray: #777;
-  --color-green: #00c300;
-  --color-lightgreen: #07d807;
+  --color-secondary: #232323;
+  --color-lightGray: #404040;
+  --color-green: #06D061;
+  --color-lightgreen: #13e973;
   --color-gray: #444444;
 
   --color-btn: #139A43;
@@ -27,10 +28,10 @@
 }
 
 body {
-  padding: 30px;
   font-family: Sora, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-secondary);
 }
 
 ul{
@@ -69,5 +70,10 @@ ul{
 
 .margin-top-2{
   margin-top: 2rem;
+}
+
+.container{
+  width: 1400px;
+  margin: 0 auto;
 }
 
