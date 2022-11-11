@@ -84,7 +84,7 @@ position: relative;
 
 .btn-spotify{
   position: absolute;
-  left: 6rem;
+  left: 3rem;
   z-index: 100;
   top: 2rem;
   padding: 0.5rem;
@@ -94,7 +94,6 @@ position: relative;
   text-align: center;
   font-family: 'Poppins', sans-serif;
   transition: all 0.1s ease-in;
-  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -105,4 +104,19 @@ position: relative;
 
 .btn-spotify:hover{
   font-weight: 700;
+}
+
+.header{
+  color: var(--color-letter);
+  font-size: var(--fs-h1);
+  margin-bottom: 4.5rem;
+}
+
+.header::after{
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--color-gray);
+  position: absolute;
+  top: 5rem;
+  left: 0;
 }

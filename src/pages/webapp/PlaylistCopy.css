@@ -1,20 +1,24 @@
 
 .listcopy{
 
-    background-color: var(--color-green);
+    background-color: var(--color-lightGray);
 
-    color: var(--color-gray);
-    border-radius: 10px;
+    color: var(--color-letter);
+
     font-size: var(--fs-h5);
     font-weight: bold;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+    /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5); */
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid white;
     max-width: 23rem;
-    padding: 2.5rem;
+    padding: 1rem;
     gap: 1rem;
     margin-left: 1rem;
+    position: absolute;
+    top: 11rem;
+    left: 2rem;
 }
 
 .listcopy-item{
@@ -65,13 +69,17 @@
   .listcopy-card-container{
     display: flex;
     flex-wrap: wrap;
-    margin-top: 2rem;
+    gap: 1rem;
+    position: absolute;
+    top: 10rem;
+    left: 30rem;
+    max-width: 55rem;
   }
   .listcopy-card{
-      border-radius: 10px;
+      border-radius: 8px;
       background: linear-gradient(to right, var(--color-lightgreen) 50%, var(--color-green) 0%);
       margin: 1rem;
-      padding: 1.5rem;
+      padding: 1rem;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
       
   }

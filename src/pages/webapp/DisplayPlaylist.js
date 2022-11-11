@@ -121,41 +121,53 @@ const DisplayPlaylist = (props) => {
       }
 
 
-  return <>
+  return <div className='playlist-result'>
+          <h1 className='header'>My Playlist</h1>
+          <table className='playlist-table'>
             {showlist && 
-            <div className='playlist-headers'>
-                <h3 className='playlist-header-name'>Playlist</h3>
-                <h3 className='playlist-header-track'>Tracks</h3>
-                <h3 className='playlist-header-followers'>Followers</h3>
-            </div>}
+            <thead className='playlist-headers'>
+                <th className=''>#</th>
+                <th className=''>Playlist</th>
+                <th className=''>Description</th>
+                <th className=''>Tracks</th>
+                <th className=''>Followers</th>
+            </thead>}
+            <tbody>
             {showlist && dataComplete.map((item, i) => 
-                        <PlayListCard key={item.id} background={i % 2 === 0 && "Snow"}>
-                            {<img src={item.images[0] && item.images[0].url} alt="" />}
-                            {<p className='playlist-name'>{item.name && item.name}</p>}
-                            {<p className='playlist-description'>{item.description && item.description}</p>}
-                            {item.tracks.total && <div className='playlist-tracks'>
-                              <p>{`${item.tracks.total} 
-                              T: (${CalcDifference(documents, item.name, item.tracks.total, item.followers.total, true)}) `
-                              }</p>
-                              <p className='playlist-arrow'>{CalcArrow(documents, item.name, item.tracks.total, item.followers.total, true)}</p>
-                            </div>}
-                            {<div className='playlist-followers'>
-                            {item.followers.total ? 
-                            <div className='playlist-followers-div'>
-                              <p>{`${item.followers.total.toLocaleString()} 
-                              F: (${CalcDifference(documents, item.name, item.tracks.total, item.followers.total, false)}) `}
-                              </p>
-                              <p className='playlist-arrow'>{CalcArrow(documents, item.name, item.tracks.total, item.followers.total, false)}</p>
-                            </div> : 
-                            <p>
-                              F:0
-                            </p>}
-                              
-                            </div>}
-                            
+                        <PlayListCard key={item.id}>
+                            <td>{i + 1}</td>
+                            <td className='playlist-img-title'>
+                              <img src={item.images[0] && item.images[0].url} alt="" />
+                              <p className='playlist-name'>{item.name && item.name}</p>
+                            </td>
+                            <td><p className=''>{item.description && item.description}</p></td>
+                            <td>
+                              {item.tracks.total && <div className=''>
+                                <p>{`${item.tracks.total} 
+                                T: (${CalcDifference(documents, item.name, item.tracks.total, item.followers.total, true)}) `
+                                }</p>
+                                <p className=''>{CalcArrow(documents, item.name, item.tracks.total, item.followers.total, true)}</p>
+                              </div>}
+                            </td>
+                            <td>
+                              {<div className=''>
+                              {item.followers.total ? 
+                              <div className=''>
+                                <p>{`${item.followers.total.toLocaleString()} 
+                                F: (${CalcDifference(documents, item.name, item.tracks.total, item.followers.total, false)}) `}
+                                </p>
+                                <p className=''>{CalcArrow(documents, item.name, item.tracks.total, item.followers.total, false)}</p>
+                              </div> : 
+                              <p>
+                                F:0
+                              </p>}
+                              </div>}
+                            </td>   
                         </PlayListCard>
                     )}
-  </>
+                    </tbody>
+          </table>
+        </div>
 }
 
 

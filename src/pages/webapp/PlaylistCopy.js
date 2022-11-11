@@ -524,7 +524,7 @@ function PlaylistCopy(props) {
 
 
   return (
-    <div>
+    <div className='copy-result'>
             {response.success && <p className='playlist-message'>Saved To Database!</p>}
             <div className='listcopy-error'>
                 {messageError.on && <Message note={messageError.message}/>}
@@ -589,6 +589,7 @@ function PlaylistCopy(props) {
                 <button className='btn-form' onClick={()=> saveToDataBase()}>Save To DB</button>
             </div>
         </div>
+        {/* <h1 className=''>Copy Playlist</h1> */}
         <div className={"listcopy-card-container"}>
             {documents && documents.map((listItem,i) => {
                 return <div key={i}>

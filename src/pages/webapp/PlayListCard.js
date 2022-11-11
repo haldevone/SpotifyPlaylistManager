@@ -4,9 +4,9 @@ import './PlayListCard.css'
 function PlayListCard(props) {
     return (
         <>
-        <div className='playlist-card'style={{background: props.background}}>
+        <tr className='playlist-row'>
             {props.children}
-        </div>
+        </tr>
         </>
     )
 }

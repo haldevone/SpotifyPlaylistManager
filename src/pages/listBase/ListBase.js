@@ -105,18 +105,16 @@ function ListBase(props) {
       }
     }
 
-  return <div>
-      <Navbar />
-      <h1>Database</h1>
+  return <div className='playlist-result'>
+      <h1 className='header'>Database</h1>
           {(documents && props.dataComplete) && documents.map((items, index) => {
             return (<div className='listbase-list-container' key={Math.random() * 10000000}>
-              <div className='listbase-outerlist'>
-                <div>
-                  <h4>List: {index}</h4>
-                  <h4>Date: {items.createdAt.toDate().toLocaleDateString('en')}</h4>
-                </div>
-                <button className='listbase-btn' onClick={() => deleteDocument(items.id)}>x</button>
+              <div className='listbase-top'>
+                  <h4 >List: {index + 1 }</h4>
+                  <h4 className='listbase-date'>Date: {items.createdAt.toDate().toLocaleDateString('en')}</h4>
+                  <button className='listbase-btn' onClick={() => deleteDocument(items.id)}>x</button>
               </div>
+
               <ul className='listbase-list'>
               {items.playlist.map(item => (
                 <li className='listbase-item' key={Math.random() * 10000000}>
